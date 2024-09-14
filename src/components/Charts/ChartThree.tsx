@@ -4,30 +4,30 @@ import { ApexOptions } from "apexcharts";
 
 // Apex Chart options
 const options: ApexOptions = {
-    chart: {
-      fontFamily: "Satoshi, sans-serif",
-      type: "donut",
+  chart: {
+    fontFamily: "Satoshi, sans-serif",
+    type: "donut",
+  },
+  colors: ["#70dd51", "#fff"], // Starting with green gradient colors for Garbage Available and Garbage Free
+  labels: ["Garbage Available", "Garbage Free"],
+  legend: {
+    show: false,
+    position: "bottom",
+  },
+  fill: {
+    type: "gradient", // Applying gradient
+    gradient: {
+      shade: "light",
+      type: "diagonal1", // You can change this to 'vertical', 'horizontal', etc.
+      shadeIntensity: 0.5,
+      gradientToColors: ["#399f12", "#afe817"], // End colors for each section
+      inverseColors: false,
+      opacityFrom: 0.85,
+      opacityTo: 0.85,
+      stops: [0, 100],
     },
-    colors: ["#70dd51", "#fff"], // Starting with green gradient colors for Desktop and Tablet
-    labels: ["Desktop", "Tablet"],
-    legend: {
-      show: false,
-      position: "bottom",
-    },
-    fill: {
-      type: "gradient", // Applying gradient
-      gradient: {
-        shade: "light",
-        type: "diagonal1", // You can change this to 'vertical', 'horizontal', etc.
-        shadeIntensity: 0.5,
-        gradientToColors: ["#399f12", "#afe817"], // End colors for each section
-        inverseColors: false,
-        opacityFrom: 0.85,
-        opacityTo: 0.85,
-        stops: [0, 100],
-      },
-    },
-  
+  },
+
   plotOptions: {
     pie: {
       donut: {
@@ -67,7 +67,7 @@ const ChartThree: React.FC = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://sgp1.blynk.cloud/external/api/get?token=Apri-mL5w3jftEVGB8SLLv1_CnjFk5_z&v0"
+        "https://sgp1.blynk.cloud/external/api/get?token=R9UMRFh1T3zPmXYY0GaO3gGfWHR-fp2F&v1",
       );
       const data = await response.json();
 
@@ -95,7 +95,7 @@ const ChartThree: React.FC = () => {
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
           <h5 className="text-xl font-semibold text-black dark:text-white">
-            Visitors Analytics
+            Garbage Levels
           </h5>
         </div>
         <div>
@@ -105,8 +105,8 @@ const ChartThree: React.FC = () => {
               id=""
               className="relative z-20 inline-flex appearance-none bg-transparent py-1 pl-3 pr-8 text-sm font-medium outline-none"
             >
-              <option value="" className="dark:bg-boxdark">
-                Monthly
+              <option value="" className="SLIIT">
+                SLIIT
               </option>
               <option value="" className="dark:bg-boxdark">
                 Yearly
@@ -147,7 +147,7 @@ const ChartThree: React.FC = () => {
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-primary"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Desktop </span>
+              <span> Garbage Available </span>
               <span> {series[0]}% </span>
             </p>
           </div>
@@ -156,7 +156,7 @@ const ChartThree: React.FC = () => {
           <div className="flex w-full items-center">
             <span className="mr-2 block h-3 w-full max-w-3 rounded-full bg-[#6577F3]"></span>
             <p className="flex w-full justify-between text-sm font-medium text-black dark:text-white">
-              <span> Tablet </span>
+              <span> Garbage Free </span>
               <span> {series[1]}% </span>
             </p>
           </div>

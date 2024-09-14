@@ -125,7 +125,7 @@ const ChartOne = () => {
   const fetchDataFromAPI = async () => {
     try {
       const response = await fetch(
-        "https://sgp1.blynk.cloud/external/api/get?token=Apri-mL5w3jftEVGB8SLLv1_CnjFk5_z&v0"
+        "https://sgp1.blynk.cloud/external/api/get?token=R9UMRFh1T3zPmXYY0GaO3gGfWHR-fp2F&v1"
       );
       const data = await response.json();
 

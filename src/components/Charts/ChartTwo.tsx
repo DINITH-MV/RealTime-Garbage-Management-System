@@ -80,7 +80,7 @@ const ChartTwo: React.FC = () => {
   const fetchRealTimeData = async () => {
     try {
       const response = await fetch(
-        "https://sgp1.blynk.cloud/external/api/get?token=Apri-mL5w3jftEVGB8SLLv1_CnjFk5_z&v0"
+        "https://sgp1.blynk.cloud/external/api/get?token=R9UMRFh1T3zPmXYY0GaO3gGfWHR-fp2F&v1"
       );
       const data = await response.json();
       const binLevel = parseInt(data, 10); // Parse the fetched data (assuming it's a number)
@@ -113,7 +113,7 @@ const ChartTwo: React.FC = () => {
       <div className="mb-4 justify-between gap-4 sm:flex">
         <div>
           <h4 className="text-xl font-semibold text-black dark:text-white">
-            Real-Time Bin Levels
+            Real-Time Bin Levels log
           </h4>
         </div>
         <div>
