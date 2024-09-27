@@ -9,7 +9,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 export const metadata: Metadata = {
   title: "RealTime Garbage Management System",
   description:
-    "This is Next.js Tables page for GarbageManage- Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Next.js Tables page for Garbage Management System Next.js Tailwind CSS Admin Dashboard Template",
 };
 
 const TablesPage = () => {

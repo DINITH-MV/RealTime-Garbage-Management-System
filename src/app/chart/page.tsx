@@ -4,9 +4,9 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Next.js Chart | GarbageManage- Next.js Dashboard Template",
+  title: "Next.js Chart | Garbage Management System Next.js Dashboard Template",
   description:
-    "This is Next.js Chart page for GarbageManage- Next.js Tailwind CSS Admin Dashboard Template",
+    "This is Next.js Chart page for Garbage Management System Next.js Tailwind CSS Admin Dashboard Template",
 };
 
 const BasicChartPage: React.FC = () => {
