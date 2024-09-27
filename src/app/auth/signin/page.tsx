@@ -22,7 +22,7 @@ const SignIn: React.FC = () => {
             <div className="px-26 py-17.5 text-center">
               <Link className="mb-5.5 inline-block" href="/">
                 <Image
-                  className="hidden dark:block"
+                  className="flex text-center dark:block "
                   src={"/images/logo/logo.svg"}
                   alt="Logo"
                   width={176}
