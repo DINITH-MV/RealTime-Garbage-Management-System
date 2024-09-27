@@ -109,7 +109,10 @@ const ChartThree: React.FC = () => {
                 SLIIT
               </option>
               <option value="" className="dark:bg-boxdark">
-                Yearly
+                Kaduwela
+              </option>
+              <option value="" className="dark:bg-boxdark">
+                Malabe
               </option>
             </select>
             <span className="absolute right-3 top-1/2 z-10 -translate-y-1/2">
