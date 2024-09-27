@@ -1,0 +1,25 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "PG Local",
+      "database": "postgres",
+      "username": "postgres",
+      "password": "root",
+      "connectionTimeout": 30
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "GMS",
+      "database": "GarbageManagementSystem",
+      "username": "postgres",
+      "connectionTimeout": 30
+    }
+  ]
+}
