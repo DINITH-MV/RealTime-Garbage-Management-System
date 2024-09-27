@@ -1,17 +1,44 @@
 import Analytics from "@/components/Dashboard/Analytics";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import { db } from "../../lib/db";
+import { format } from "date-fns";
 
 export const metadata: Metadata = {
   title: "RealTime Garbage Management System",
   description: "This is Next.js Home for GarbageManageDashboard",
 };
 
-export default function Home() {
+type LocationData = {
+  id: string;
+  city: string;
+  apiUrl: string;
+  latitude: number;
+  longitude: number;
+  createdAt: string;
+};
+
+export default async function Home() {
+  const LOCATION = await db.location.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  // Format the createdAt field to a string
+  const formattedLocations: LocationData[] = LOCATION.map((location) => ({
+    id: location.id,
+    city: location.city,
+    apiUrl: location.apiUrl,
+    latitude: location.latitude,
+    longitude: location.longitude,
+    createdAt: format(location.createdAt, "yyyy-MM-dd HH:mm:ss"),
+  }));
+
   return (
     <>
       <DefaultLayout>
-        <Analytics />
+        <Analytics locations={formattedLocations}/>
       </DefaultLayout>
     </>
   );

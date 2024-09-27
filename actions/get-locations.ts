@@ -20,7 +20,7 @@ export const getAllFeedbacks = async ({ id }: GetLocations): Promise<location[]>
 
     return feedbacks;
   } catch (error) {
-    console.log("[GET_FEEDBACKS]", error);
+    console.log("[GET_LOCATIONS]", error);
     return [];
   }
 };
