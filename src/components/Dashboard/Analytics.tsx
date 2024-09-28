@@ -32,11 +32,11 @@ const Analytics: React.FC<AnalyticsProps> = ({locations}) => {
 
   useEffect(() => {
     const results = locations.filter(location =>
-      feedback.messages.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      feedback.reply.toLowerCase().includes(replyQuery.toLowerCase())
+      location.city &&
+      location.apiUrl && location.latitude && location.longitude && location.createdAt
     );
-    setFilteredFeedbacks(results);
-  }, [searchQuery, replyQuery, formattedFeedbacks]);
+    setFilteredLocations(results);
+  }, [locations]);
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5"></div>
@@ -45,8 +45,7 @@ const Analytics: React.FC<AnalyticsProps> = ({locations}) => {
         <ChartOne />
         <ChartTwo />
         <ChartThree />
-        <MapOne />
-        
+        <MapOne />        
       </div>
     </>
   );
