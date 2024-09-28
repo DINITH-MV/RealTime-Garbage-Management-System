@@ -21,5 +21,7 @@
       "username": "postgres",
       "connectionTimeout": 30
     }
-  ]
+  ],
+  "WillLuke.nextjs.addTypesOnSave": true,
+  "WillLuke.nextjs.hasPrompted": true
 }
