@@ -8,7 +8,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-const ChartOne = () => {
+const ChartOne = (filteredLocations: any) => {
   const [series, setSeries] = useState([
     {
       name: "Kaduwela",
@@ -171,21 +171,22 @@ const ChartOne = () => {
     return labels;
   };
 
-  // UseEffect to update chart periodically
+  // UseEffect to update chart periodically every 6 seconds
   useEffect(() => {
-    fetchDataFromAPI(); // Fetch initial data
-
-    const interval = setInterval(() => {
-      fetchDataFromAPI(); // Fetch new data every 30 seconds
+    const fetchAndUpdate = () => {
+      fetchDataFromAPI(); // Fetch new data every 6 seconds
       setCurrentCategory(generateTimeLabels()); // Update the time labels
-    }, 30000);
+    };
+
+    fetchAndUpdate(); // Initial call
+
+    const interval = setInterval(fetchAndUpdate, 2000); // 6 seconds interval
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, []);
+  }, [series[0]]); // Add series as a dependency to ensure it updates correctly
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
-      <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
       <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
         <div className="flex w-full flex-wrap gap-3 sm:gap-5">
           <div className="flex min-w-47.5">
@@ -216,8 +217,6 @@ const ChartOne = () => {
             </div>
           </div>
         </div>
-      </div>
-
       </div>
 
       <div>
