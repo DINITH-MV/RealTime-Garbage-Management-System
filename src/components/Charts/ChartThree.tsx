@@ -67,8 +67,9 @@ const ChartThree: React.FC = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://sgp1.blynk.cloud/external/api/get?token=R9UMRFh1T3zPmXYY0GaO3gGfWHR-fp2F&v1",
+        "https://random-number-generator-7jp6.onrender.com/value",
       );
+      // "https://sgp1.blynk.cloud/external/api/get?token=R9UMRFh1T3zPmXYY0GaO3gGfWHR-fp2F&v1",
       const data = await response.json();
 
       // Assuming the API returns a numeric value for 'v1' and updating the series
@@ -85,7 +86,7 @@ const ChartThree: React.FC = () => {
   // Poll the API every 5 seconds
   useEffect(() => {
     fetchData(); // Initial fetch
-    const intervalId = setInterval(fetchData, 5000); // Poll every 5 seconds
+    const intervalId = setInterval(fetchData, 1000); // Poll every 5 seconds
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);

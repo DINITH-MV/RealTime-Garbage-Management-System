@@ -17,6 +17,7 @@ model Location {
   id        String   @id @default(uuid())
   city      String
   apiUrl    String
+  marker    String
   latitude  Float
   longitude Float
   createdAt DateTime @default(now())

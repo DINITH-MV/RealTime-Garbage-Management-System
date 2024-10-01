@@ -80,8 +80,10 @@ const ChartTwo: React.FC = () => {
   const fetchRealTimeData = async () => {
     try {
       const response = await fetch(
-        "https://sgp1.blynk.cloud/external/api/get?token=R9UMRFh1T3zPmXYY0GaO3gGfWHR-fp2F&v1"
+        "https://random-number-generator-7jp6.onrender.com/value"
       );
+      // "https://sgp1.blynk.cloud/external/api/get?token=R9UMRFh1T3zPmXYY0GaO3gGfWHR-fp2F&v1"
+
       const data = await response.json();
       const binLevel = parseInt(data, 10); // Parse the fetched data (assuming it's a number)
       const currentTime = new Date().toLocaleTimeString(); // Capture the current time
@@ -103,7 +105,7 @@ const ChartTwo: React.FC = () => {
   // Poll the API every 5 seconds to get the latest bin data
   useEffect(() => {
     fetchRealTimeData(); // Initial fetch
-    const intervalId = setInterval(fetchRealTimeData, 5000); // Poll every 5 seconds
+    const intervalId = setInterval(fetchRealTimeData, 1000); // Poll every 5 seconds
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);

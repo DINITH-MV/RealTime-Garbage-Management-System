@@ -13,6 +13,7 @@ type LocationData = {
   id: string;
   city: string;
   apiUrl: string;
+  marker: string;
   latitude: number;
   longitude: number;
   createdAt: string;
@@ -30,6 +31,7 @@ export default async function Home() {
     id: location.id,
     city: location.city,
     apiUrl: location.apiUrl,
+    marker: location.marker,
     latitude: location.latitude,
     longitude: location.longitude,
     createdAt: format(location.createdAt, "yyyy-MM-dd HH:mm:ss"),

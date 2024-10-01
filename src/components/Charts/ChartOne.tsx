@@ -8,7 +8,21 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
 
-const ChartOne = (filteredLocations: any) => {
+type locationType = {
+  id: string;
+  city: string;
+  apiUrl: string;
+  marker: string;
+  latitude: number;
+  longitude: number;
+  createdAt: string;
+};
+
+interface LocationDataProps {
+  filteredLocations: locationType[];
+}
+
+const ChartOne: React.FC<LocationDataProps> = ({ filteredLocations }) => {
   const [series, setSeries] = useState([
     {
       name: "Kaduwela",
@@ -125,7 +139,7 @@ const ChartOne = (filteredLocations: any) => {
   const fetchDataFromAPI = async () => {
     try {
       const response = await fetch(
-        "https://random-number-generator-7jp6.onrender.com/value"
+        "https://random-number-generator-7jp6.onrender.com/value",
       );
       const data = await response.json();
 
@@ -160,7 +174,7 @@ const ChartOne = (filteredLocations: any) => {
     const now = new Date();
 
     for (let i = 7; i >= 0; i--) {
-      const time = new Date(now.getTime() - i * 3 * 60 * 1000);
+      const time = new Date(now.getTime() - i * 2 * 60 * 1000);
       const formattedTime = time.toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
@@ -171,54 +185,51 @@ const ChartOne = (filteredLocations: any) => {
     return labels;
   };
 
-  // UseEffect to update chart periodically every 6 seconds
+  // UseEffect to update chart periodically every 20 seconds
   useEffect(() => {
     const fetchAndUpdate = () => {
-      fetchDataFromAPI(); // Fetch new data every 6 seconds
+      fetchDataFromAPI(); // Fetch new data
       setCurrentCategory(generateTimeLabels()); // Update the time labels
     };
 
     fetchAndUpdate(); // Initial call
 
-    const interval = setInterval(fetchAndUpdate, 2000); // 6 seconds interval
+    const interval = setInterval(fetchAndUpdate, 20000); // 20 seconds interval
 
     return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, [series[0]]); // Add series as a dependency to ensure it updates correctly
+  }, [series]); // Empty dependency array to ensure the effect only runs on mount and at the interval
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
-      <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
-        <div className="flex w-full flex-wrap gap-3 sm:gap-5">
-          <div className="flex min-w-47.5">
-            <span className="mr-2 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-[#fa4d2c]">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-[#fa4d2c]"></span>
-            </span>
-            <div className="w-full">
-              <p className="font-semibold text-[#fa4d2c]">SLIIT</p>
-              <p className="text-sm font-medium">Real time garbage level</p>
-            </div>
-          </div>
-          <div className="flex min-w-47.5">
-            <span className="mr-2 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-[#46a93f]">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-[#46a93f]"></span>
-            </span>
-            <div className="w-full">
-              <p className="font-semibold text-[#46a93f]">Kaduwela</p>
-              <p className="text-sm font-medium">Real time garbage level</p>
-            </div>
-          </div>
-          <div className="flex min-w-47.5">
-            <span className="mr-2 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-[#d19837]">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-[#d19837]"></span>
-            </span>
-            <div className="w-full">
-              <p className="font-semibold text-[#d19837]">Malabe</p>
-              <p className="text-sm font-medium">Real time garbage level</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {filteredLocations.map((location: locationType) => (
+        <tr key={location.id}>
+          <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
+            <div className="flex w-full flex-wrap gap-3 sm:gap-5">
+              <div className="flex min-w-47.5">
+                <span className="mr-2 mt-1 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-[#fa4d2c]">
+                  <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-[#fa4d2c]"></span>
+                </span>
+                <td className="text-gray-k500 texte-[14pt] w-[300px] whitespace-nowrap px-3 py-2">
+                  {location.city}
+                  {location.marker}
+                  <div className="w-full">
+                    <p
+                      className="font-semibold"
+                      style={{ color: location.marker }}
+                    >
+                      SLIIT
+                    </p>
 
+                    <p className="text-sm font-medium">
+                      Real time garbage level
+                    </p>
+                  </div>
+                </td>
+              </div>
+            </div>
+          </div>
+        </tr>
+      ))}
       <div>
         <div id="chartOne" className="-ml-5">
           <ReactApexChart
@@ -235,13 +246,13 @@ const ChartOne = (filteredLocations: any) => {
       <div className="mt-4">
         <button
           onClick={downloadCSV}
-          className="mr-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+          className="mr-2 rounded-md bg-blue-500 px-4 py-2 text-white"
         >
           Download CSV
         </button>
         <button
           onClick={downloadJPG}
-          className="px-4 py-2 bg-green-500 text-white rounded-md"
+          className="rounded-md bg-green-500 px-4 py-2 text-white"
         >
           Download JPG
         </button>

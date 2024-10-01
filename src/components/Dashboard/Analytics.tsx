@@ -19,6 +19,7 @@ type LocationData = {
   id: string;
   city: string;
   apiUrl: string;
+  marker: string;
   latitude: number;
   longitude: number;
   createdAt: string;
