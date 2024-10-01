@@ -125,7 +125,7 @@ const ChartOne = (filteredLocations: any) => {
   const fetchDataFromAPI = async () => {
     try {
       const response = await fetch(
-        "https://sgp1.blynk.cloud/external/api/get?token=R9UMRFh1T3zPmXYY0GaO3gGfWHR-fp2F&v1"
+        "https://random-number-generator-7jp6.onrender.com/value"
       );
       const data = await response.json();
 
