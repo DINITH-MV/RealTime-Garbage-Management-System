@@ -188,21 +188,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
-        className={`fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:translate-x-0 ${
+        className={`duration-400 fixed left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-gradient-to-br from-[#2c4515] via-[#244e00] to-[#006c28] ease-linear dark:bg-boxdark lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* <!-- SIDEBAR HEADER --> */}
         <div className="flex items-center justify-center gap-2 px-6 py-5.5 lg:py-6.5">
           <Link href="/">
-            <Image
-              width={226}
-              height={52}
-              src={"/images/logo/logo.svg"}
-              alt="Logo"
-              priority
-              className="rounded-[11px]"
-            />
+            <div>
+              <Image
+                width={226}
+                height={52}
+                src={"/images/logo/logo.svg"}
+                alt="Logo"
+                priority
+                className="rounded-[11px] border-[3.5px] border-[#3fa53f]"
+              />
+              {/* <div className="bg-[#83767630] w-[226px] absolute z-[100] h-[65px] mt-[-65.7px]"></div> */}
+            </div>
           </Link>
 
           <button

@@ -59,7 +59,23 @@ const options: ApexOptions = {
   ],
 };
 
-const ChartThree: React.FC = () => {
+
+type LocationType = {
+  id: string;
+  city: string;
+  apiUrl: string;
+  marker: string;
+  latitude: number;
+  longitude: number;
+  createdAt: string;
+};
+
+interface LocationDataProps {
+  filteredLocations: LocationType[];
+}
+
+const ChartThree: React.FC<LocationDataProps> = ({ filteredLocations }) => {
+
   // State to store the real-time series data
   const [series, setSeries] = useState<number[]>([0, 0]);
 
@@ -96,7 +112,7 @@ const ChartThree: React.FC = () => {
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
           <h5 className="text-xl font-semibold text-black dark:text-white">
-            Garbage Levels
+            Garbage Bin Level
           </h5>
         </div>
         <div>
@@ -106,15 +122,14 @@ const ChartThree: React.FC = () => {
               id=""
               className="relative z-20 inline-flex appearance-none bg-transparent py-1 pl-3 pr-8 text-sm font-medium outline-none"
             >
-              <option value="" className="SLIIT">
-                SLIIT
-              </option>
-              <option value="" className="dark:bg-boxdark">
-                Kaduwela
-              </option>
-              <option value="" className="dark:bg-boxdark">
-                Malabe
-              </option>
+              {filteredLocations
+              .slice()
+              .reverse()
+              .map((location, index) => (
+                <option key={index} className="dark:bg-boxdark">
+                  {location.city}
+                </option>
+              ))}
             </select>
             <span className="absolute right-3 top-1/2 z-10 -translate-y-1/2">
               <svg

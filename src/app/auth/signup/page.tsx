@@ -9,7 +9,8 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 export const metadata: Metadata = {
   title:
     "Next.js SignUp Page | Garbage Management System Next.js Dashboard Template",
-  description: "This is Next.js SignUp Page GarbageManageDashboard Template",
+  description:
+    "This is Next.js SignUp Page GarbageManagementDashboard Template",
   // other metadata
 };
 

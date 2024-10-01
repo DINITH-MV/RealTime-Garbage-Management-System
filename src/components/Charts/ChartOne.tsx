@@ -206,7 +206,7 @@ const ChartOne: React.FC<LocationDataProps> = ({ filteredLocations }) => {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-2">
         <button onClick={downloadCSV} className="mr-2 rounded-md bg-blue-500 px-4 py-2 text-white">
           Download CSV
         </button>
