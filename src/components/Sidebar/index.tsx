@@ -46,8 +46,8 @@ const menuGroups = [
           </svg>
         ),
         label: "Dashboard",
-        route: "#",
-        children: [{ label: "Analytics", route: "/" }],
+        route: "/",
+        
       },
       {
         icon: (
@@ -152,7 +152,11 @@ const menuGroups = [
           </svg>
         ),
         label: "Settings",
-        route: "/settings",
+        
+        route: "#",
+        children: [
+          { label: "Area Management", route: "/settings/AreaManagement" },
+          { label: "Form Layout", route: "/forms/form-layout" },]
       },
       {
         icon: (

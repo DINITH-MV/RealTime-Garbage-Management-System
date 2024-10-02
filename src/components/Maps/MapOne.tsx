@@ -78,7 +78,7 @@ const MapOne: React.FC<MapOneProps> = ({ filteredLocations }) => {
       <h4 className="mb-2 text-xl font-semibold text-black dark:text-white">
         Region labels
       </h4>
-      <div className="mt-[20px] h-90 rounded-[14px] border-[8px] border-[#eeeeee] p-[10px] ">
+      <div className="mt-[20px] h-90 rounded-[14px] border-[8px] border-[#eeeeee] bg-[rgb(250,247,247)] p-[10px] ">
         <div id="mapOne" className="mapOne map-btn"></div>
       </div>
     </div>

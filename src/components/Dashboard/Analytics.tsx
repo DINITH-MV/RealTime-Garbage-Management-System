@@ -46,7 +46,8 @@ const Analytics: React.FC<AnalyticsProps> = ({locations}) => {
         <ChartOne filteredLocations={filteredLocations}/>
         <ChartTwo filteredLocations={filteredLocations} />
         <ChartThree filteredLocations={filteredLocations} />
-        <MapOne filteredLocations={filteredLocations} />        
+        <MapOne filteredLocations={filteredLocations} />   
+             
       </div>
     </>
   );
