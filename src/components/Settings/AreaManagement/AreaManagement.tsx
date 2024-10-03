@@ -35,7 +35,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
 
               <div className="flex flex-col">
                 <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
-                  <div className="p-2.5 xl:p-5 w-[120px]">
+                  <div className="text-left p-2.5 xl:p-5">
                     <h5 className="text-sm font-medium uppercase xsm:text-base">
                       City
                     </h5>
@@ -67,25 +67,24 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                     className={`grid grid-cols-3 sm:grid-cols-5`}
                     key={location.id}
                   >
-                    <div className="flex items-center p-2.5 xl:p-5 w-[120px]">
+                    <div className="flex w-[120px] items-center p-2.5 xl:p-5">
                       <p className="text-black dark:text-white sm:block">
                         {location.city}
                       </p>
                     </div>
 
-                    <div className="flex w-[160px] items-center justify-center p-2.5 xl:p-5">
+                    <div className="flex w-[160px] items-center justify-center p-2.5 ml-[-5px] xl:p-5">
                       <p className="w-[160px] overflow-hidden text-ellipsis whitespace-nowrap text-black dark:text-white">
                         {location.apiUrl}
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-start p-2.5 xl:p-5">
-                      <div className="w-[15px] h-[15px] mr-[7px] "  style={{ backgroundColor: location.marker }}>
-
-                      </div>
-                      <p>
-                        {location.marker}
-                      </p>
+                    <div className="flex items-center justify-start p-2.5 xl:p-5 ml-[5px]">
+                      <div
+                        className="mr-[7px] h-[15px] w-[15px] "
+                        style={{ backgroundColor: location.marker }}
+                      ></div>
+                      <p>{location.marker}</p>
                     </div>
 
                     <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
@@ -115,47 +114,56 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
             <form action="#">
               <div className="p-6.5">
                 {/* Form Fields */}
-                <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      First name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter your first name"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                  <div className="w-full xl:w-1/2">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      Last name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter your last name"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
-                </div>
 
-                <div className="mb-4.5">
+                <div className="mb-4.5 w-full">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Email <span className="text-meta-1">*</span>
+                    City
                   </label>
                   <input
-                    type="email"
-                    placeholder="Enter your email address"
+                    type="text"
+                    placeholder="Eg: Kaluthara"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+                <div className="mb-4.5 w-full">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Blynk key
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Ex: https://sgp1.blynk.cloud/external/api/get?token=R9UM..."
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
 
                 <div className="mb-4.5">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Subject
+                    Color of the Marker 
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Eg: #ff0000"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Latitude
                   </label>
                   <input
                     type="text"
-                    placeholder="Select subject"
+                    placeholder="Eg: -74.9585"
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+                <div className="mb-4.5">
+                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    Longitude
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Eg: 65.8612"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -164,11 +172,11 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
 
                 <div className="mb-6">
                   <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Message
+                    Longitude
                   </label>
                   <textarea
                     rows={6}
-                    placeholder="Type your message"
+                    placeholder="Eg: 65.8612"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   ></textarea>
                 </div>
