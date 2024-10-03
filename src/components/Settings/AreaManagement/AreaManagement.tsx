@@ -33,7 +33,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                 Areas
               </h4>
 
-              <div className="flex flex-col">
+              <div className="flex flex-col mobile:flex-col">
                 <div className="grid grid-cols-3 rounded-sm bg-gray-2 dark:bg-meta-4 sm:grid-cols-5">
                   <div className="text-left p-2.5 xl:p-5">
                     <h5 className="text-sm font-medium uppercase xsm:text-base">
@@ -74,7 +74,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                     </div>
 
                     <div className="flex w-[160px] items-center justify-center p-2.5 ml-[-5px] xl:p-5">
-                      <p className="w-[160px] overflow-hidden text-ellipsis whitespace-nowrap text-black dark:text-white">
+                      <p className="w-[160px] mobile:w-[100px] mobile:ml-[-30px] overflow-hidden text-ellipsis whitespace-nowrap text-black dark:text-white">
                         {location.apiUrl}
                       </p>
                     </div>
@@ -89,7 +89,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
 
                     <div className="hidden items-center justify-center p-2.5 sm:flex xl:p-5">
                       <p className="text-[#23ade8] dark:text-white">
-                        {location.longitude}
+                        {location.latitude}
                       </p>
                     </div>
 
@@ -103,7 +103,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-9">
+        <div className="flex flex-col gap-9 max-w-[600px]">
           {/* Contact Form */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
@@ -153,7 +153,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                   </label>
                   <input
                     type="text"
-                    placeholder="Eg: -74.9585"
+                    placeholder="Eg: 8.9585"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -166,19 +166,6 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                     placeholder="Eg: 65.8612"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
-                </div>
-
-                <SelectGroupOne />
-
-                <div className="mb-6">
-                  <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                    Longitude
-                  </label>
-                  <textarea
-                    rows={6}
-                    placeholder="Eg: 65.8612"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  ></textarea>
                 </div>
 
                 <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
