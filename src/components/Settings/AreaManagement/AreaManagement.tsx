@@ -220,24 +220,93 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
       </div>
       {/* Modal (Pop-Up) */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-              Pop-Up Modal
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300">
-              This is the content of the pop-up modal. You can add any content
-              you want here, including buttons, forms, etc.
-            </p>
+        <div className="fixed inset-0 z-50 mt-[40px] flex items-center justify-center bg-black bg-opacity-50">
+          <div className="flex w-[30%] min-w-[400px] flex-col gap-9">
+            {/* Contact Form */}
+            <div className="rounded-[16px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
+                <h3 className="font-medium text-black dark:text-white">
+                  Waste Area Management
+                </h3>
+                <div className="float-right border mt-[-30px]">
+                  <button
+                    onClick={closeModal}
+                    className="bg-red-500 hover:bg-red-600 rounded-lg px-4 py-2 text-black"
+                  >
+                     <i
+                  className="fa-duotone fa-solid fa-circle-xmark mr-[10px] text-[18pt]"
+                  style={
+                    {
+                      "--fa-primary-color": "#fffff",
+                      "--fa-secondary-color": "#fffff",
+                    } as React.CSSProperties
+                  }
+                ></i>
+                  </button>
+                </div>
+              </div>
+              <form action="#">
+                <div className="p-6.5">
+                  {/* Form Fields */}
 
-            {/* Close Button */}
-            <div className="mt-6 flex justify-end">
-              <button
-                onClick={closeModal}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
-              >
-                Close
-              </button>
+                  <div className="mb-4.5 w-full">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Eg: Kaluthara"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div className="mb-4.5 w-full">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Blynk key
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Ex: https://sgp1.blynk.cloud/external/api/get?token=R9UM..."
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Color of the Marker
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="Eg: #ff0000"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Latitude
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Eg: 8.9585"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      Longitude
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Eg: 65.8612"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+
+                  <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                    Send Message
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
