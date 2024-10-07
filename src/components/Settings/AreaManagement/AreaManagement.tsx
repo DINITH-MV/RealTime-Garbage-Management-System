@@ -40,6 +40,50 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
   const startIndex = (currentPage - 1) * entriesPerPage + 1;
   const endIndex = Math.min(currentPage * entriesPerPage, totalEntries);
 
+  const [city, setCity] = useState("");
+  const [apiUrl, setApiUrl] = useState("");
+  const [marker, setMarker] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+
+  // Function to handle form submission
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent default form submission behavior
+
+    // Create a location data object
+    const locationData = {
+      city,
+      apiUrl,
+      marker,
+      latitude: parseFloat(latitude), // Ensure latitude and longitude are numbers
+      longitude: parseFloat(longitude),
+    };
+
+    try {
+      // Send the data to the backend
+      const response = await fetch("/api/Area-Management", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(locationData), // Send data as JSON
+      });
+
+      console.log(locationData)
+
+      if (response.ok) {
+        // Handle successful response
+        console.log("Location added successfully!");
+        closeModal(); // Close the modal if needed
+      } else {
+        // Handle error response
+        console.error("Failed to add location.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   return (
     <div>
       <Breadcrumb pageName="Settings / Area Management" />
@@ -225,26 +269,25 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
             {/* Contact Form */}
             <div className="rounded-[16px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className=" border-stroke px-6.5 py-4 dark:border-strokedark">
-                
                 <div className="float-right ">
                   <button
                     onClick={closeModal}
                     className="bg-red-500 hover:bg-red-600 rounded-lg  text-black"
                   >
-                     <i
-                  className="fa-duotone fa-solid fa-circle-xmark mr-[0px] text-[24pt]"
-                  style={
-                    {
-                      "--fa-primary-color": "#fff",
-                      "--fa-secondary-color": "#ff4141",
-                      "--fa-secondary-opacity": "1",
-                    } as React.CSSProperties
-                  }
-                ></i>
+                    <i
+                      className="fa-duotone fa-solid fa-circle-xmark mr-[0px] text-[24pt]"
+                      style={
+                        {
+                          "--fa-primary-color": "#fff",
+                          "--fa-secondary-color": "#ff4141",
+                          "--fa-secondary-opacity": "1",
+                        } as React.CSSProperties
+                      }
+                    ></i>
                   </button>
                 </div>
               </div>
-              <form action="#">
+              <form onSubmit={handleSubmit}>
                 <div className="p-6.5">
                   {/* Form Fields */}
 
@@ -254,6 +297,8 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                     </label>
                     <input
                       type="text"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
                       placeholder="Eg: Kaluthara"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -264,6 +309,8 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                     </label>
                     <input
                       type="text"
+                      value={apiUrl}
+                      onChange={(e) => setApiUrl(e.target.value)}
                       placeholder="Ex: https://sgp1.blynk.cloud/external/api/get?token=R9UM..."
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -275,6 +322,8 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                     </label>
                     <input
                       type="email"
+                      value={marker}
+                      onChange={(e) => setMarker(e.target.value)}
                       placeholder="Eg: #ff0000"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -286,6 +335,8 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                     </label>
                     <input
                       type="text"
+                      value={latitude}
+                      onChange={(e) => setLatitude(e.target.value)}
                       placeholder="Eg: 8.9585"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -296,6 +347,8 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                     </label>
                     <input
                       type="text"
+                      value={longitude}
+                      onChange={(e) => setLongitude(e.target.value)}
                       placeholder="Eg: 65.8612"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
