@@ -1,11 +1,9 @@
 "use client";
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import Image from "next/image";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import SelectGroupOne from "@/components/SelectGroup/SelectGroupOne";
+import axios from "axios";
 import { useEffect, useState } from "react";
-import getAllLocations from "../../../../actions/get-locations";
+import { toast } from "react-toastify";
 
 type LocationData = {
   id: string;
@@ -16,78 +14,144 @@ type LocationData = {
   longitude: number;
   createdAt: string;
 };
-interface AnalyticsProps {
+
+interface AreaManagementProps {
   locations: LocationData[];
 }
 
-const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
+const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState<LocationData | null>(null); // Used for updating
+  const [locationList, setLocationList] = useState<LocationData[]>(locations); // Use local state for locations
 
   const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const closeModal = () => {
+    setIsOpen(false);
+    setCurrentLocation(null); // Reset on close
+  };
 
-  const filteredLocations = locations.filter(
+  const filteredLocations = locationList.filter(
     (location) =>
       location.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      location.apiUrl.toLowerCase().includes(searchTerm.toLowerCase()),
+      location.apiUrl.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalEntries = locations.length; // Total number of entries
+  const totalEntries = locationList.length;
   const currentPage = 1; // Example value, this would typically come from state
   const entriesPerPage = 3; // Example value, could be adjustable
-
   const startIndex = (currentPage - 1) * entriesPerPage + 1;
   const endIndex = Math.min(currentPage * entriesPerPage, totalEntries);
 
+  // State for form fields
   const [city, setCity] = useState("");
   const [apiUrl, setApiUrl] = useState("");
   const [marker, setMarker] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
 
+  useEffect(() => {
+    if (currentLocation) {
+      // If editing, pre-fill the form
+      setCity(currentLocation.city);
+      setApiUrl(currentLocation.apiUrl);
+      setMarker(currentLocation.marker);
+      setLatitude(currentLocation.latitude.toString());
+      setLongitude(currentLocation.longitude.toString());
+    } else {
+      // Reset fields for new location
+      setCity("");
+      setApiUrl("");
+      setMarker("");
+      setLatitude("");
+      setLongitude("");
+    }
+  }, [currentLocation]);
+
   // Function to handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
 
-    // Create a location data object
     const locationData = {
       city,
       apiUrl,
       marker,
-      latitude: parseFloat(latitude), // Ensure latitude and longitude are numbers
+      latitude: parseFloat(latitude),
       longitude: parseFloat(longitude),
     };
 
     try {
-      // Send the data to the backend
-      const response = await fetch("/api/Area-Management", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(locationData), // Send data as JSON
-      });
+      let response;
 
-      console.log(locationData)
+      if (currentLocation) {
+        // Updating an existing location
+        response = await fetch(`/api/Area-Management/${currentLocation.id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(locationData),
+        });
+
+        if (response.ok) {
+          // Update the location in the local state
+          setLocationList((prevList) =>
+            prevList.map((loc) =>
+              loc.id === currentLocation.id ? { ...loc, ...locationData } : loc
+            )
+          );
+        }
+      } else {
+        // Adding a new location
+        response = await fetch("/api/Area-Management", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(locationData),
+        });
+
+        if (response.ok) {
+          const newLocation = await response.json(); // Assuming your API returns the created location with an ID
+          // Add the new location to the local state
+          setLocationList((prevList) => [...prevList, newLocation]);
+        }
+      }
 
       if (response.ok) {
-        // Handle successful response
-        console.log("Location added successfully!");
-        closeModal(); // Close the modal if needed
+        console.log(currentLocation ? "Location updated successfully!" : "Location added successfully!");
+        closeModal(); // Close the modal
       } else {
-        // Handle error response
-        console.error("Failed to add location.");
+        console.error("Failed to save location.");
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
+  // Function to handle opening the form to edit a location
+  const handleEdit = (location: LocationData) => {
+    setCurrentLocation(location);
+    openModal();
+  };
+
+  const onDelete = async (codeId: string) => {
+    try {
+      await axios.delete(`/api/codeGenerator/${codeId}`);
+      toast.success("Generated Code deleted");
+
+      setLocationList((prevList) =>
+        prevList.filter((loc) => loc.id !== codeId)
+      );
+    } catch {
+      toast.error("Something went wrong");
+    }
+  };
+
+
   return (
     <div>
       <Breadcrumb pageName="Settings / Area Management" />
-      {/* Top Channels */}
       <div className="font-sans bg-gray-200 antialiased">
         <div className="container mx-auto px-4 sm:px-8">
           <div className="py-8">
@@ -95,33 +159,6 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
               <h2 className="text-2xl font-semibold leading-tight">Areas</h2>
             </div>
             <div className="my-2 flex w-full flex-col sm:flex-row">
-              <div className="mb-1 flex flex-row sm:mb-0">
-                <div className="relative">
-                  <select className="border-gray-400 text-gray-700 focus:border-gray-500 block h-full w-full appearance-none rounded-l border bg-white px-4 py-2 pr-8 leading-tight focus:bg-white focus:outline-none dark:bg-[#23621c] dark:text-[#fff]">
-                    <option>4</option>
-                  </select>
-                  <div className="text-gray-700 pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
-                    <svg
-                      className="h-4 w-4 fill-current"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="relative">
-                  <div className="text-gray-700 pointer-events-none absolute inset-y-0 right-0 flex items-center px-2">
-                    <svg
-                      className="h-4 w-4 fill-current"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
               <div className="relative block">
                 <span className="absolute inset-y-0 left-0 flex h-full items-center pl-2">
                   <svg
@@ -136,7 +173,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                   placeholder="Search"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="border-gray-400 text-gray-700 placeholder-gray-400 focus:placeholder-gray-600 focus:text-gray-700 block w-full rounded-r-[4px] border bg-white py-2 pl-8 pr-6 text-[14pt] focus:bg-white focus:outline-none dark:bg-[#23621c] dark:text-white placeholder:dark:text-[#fff]"
+                  className="border-gray-400 text-gray-700 placeholder-gray-400 focus:placeholder-gray-600 focus:text-gray-700 block w-full rounded-[7px] border bg-white py-2 pl-8 pr-6 text-[14pt] focus:bg-white focus:outline-none dark:bg-[#23621c] dark:text-white placeholder:dark:text-[#fff]"
                 />
               </div>
             </div>
@@ -217,7 +254,10 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                           </p>
                         </td>
                         <td className="border-gray-200 flex border-b border-b-[#fff] px-5 py-5 text-[14pt] dark:border-b-[#fff]">
-                          <button className="rounded-[7px] bg-[#cee797] p-[8px]">
+                          <button
+                            className="rounded-[7px] bg-[#cee797] p-[8px]"
+                            onClick={() => handleEdit(location)}
+                          >
                             <i
                               className="fa-duotone fa-solid fa-marker text-[17pt]"
                               style={
@@ -228,7 +268,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                               }
                             ></i>
                           </button>
-                          <button className="text-red-600 hover:text-red-900 ml-2 rounded-[7px] bg-[#fae6d1] p-[9px]">
+                          <button className="text-red-600 hover:text-red-900 ml-2 rounded-[7px] bg-[#fae6d1] p-[9px]" onClick={()=>onDelete(location.id)}>
                             <i
                               className="fa-duotone fa-solid fa-trash text-[18pt]"
                               style={
@@ -262,17 +302,17 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
           </div>
         </div>
       </div>
+
       {/* Modal (Pop-Up) */}
       {isOpen && (
         <div className="fixed inset-0 z-50 mt-[40px] flex items-center justify-center bg-black bg-opacity-50">
           <div className="flex w-[30%] min-w-[400px] flex-col gap-9">
-            {/* Contact Form */}
             <div className="rounded-[16px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className=" border-stroke px-6.5 py-4 dark:border-strokedark">
                 <div className="float-right ">
                   <button
                     onClick={closeModal}
-                    className="bg-red-500 hover:bg-red-600 rounded-lg  text-black"
+                    className="bg-red-500 hover:bg-red-600 rounded-lg text-black"
                   >
                     <i
                       className="fa-duotone fa-solid fa-circle-xmark mr-[0px] text-[24pt]"
@@ -290,7 +330,6 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
               <form onSubmit={handleSubmit}>
                 <div className="p-6.5">
                   {/* Form Fields */}
-
                   <div className="mb-4.5 w-full">
                     <label className="mb-3 block text-sm font-medium text-[#000000] dark:text-white">
                       City
@@ -315,20 +354,18 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-
                   <div className="mb-4.5">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Color of the Marker
                     </label>
                     <input
-                      type="email"
+                      type="text"
                       value={marker}
                       onChange={(e) => setMarker(e.target.value)}
                       placeholder="Eg: #ff0000"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-
                   <div className="mb-4.5">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
                       Latitude
@@ -353,9 +390,8 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-
                   <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                    Add a place
+                    {currentLocation ? "Update Location" : "Add a Place"}
                   </button>
                 </div>
               </form>
