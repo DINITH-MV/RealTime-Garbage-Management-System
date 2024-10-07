@@ -110,7 +110,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                     } as React.CSSProperties
                   }
                 ></i>
-                NEW CITY
+                NEW LOCATION
               </button>
             </div>
 
@@ -120,7 +120,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                   <thead className="bg-[#15752e] text-[#f5fbf0] dark:bg-[#174312]">
                     <tr>
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
-                        City
+                        Location
                       </th>
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
                         Blynk Key
@@ -224,21 +224,20 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
           <div className="flex w-[30%] min-w-[400px] flex-col gap-9">
             {/* Contact Form */}
             <div className="rounded-[16px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
-                <h3 className="font-medium text-black dark:text-white">
-                  Waste Area Management
-                </h3>
-                <div className="float-right border mt-[-30px]">
+              <div className=" border-stroke px-6.5 py-4 dark:border-strokedark">
+                
+                <div className="float-right ">
                   <button
                     onClick={closeModal}
-                    className="bg-red-500 hover:bg-red-600 rounded-lg px-4 py-2 text-black"
+                    className="bg-red-500 hover:bg-red-600 rounded-lg  text-black"
                   >
                      <i
-                  className="fa-duotone fa-solid fa-circle-xmark mr-[10px] text-[18pt]"
+                  className="fa-duotone fa-solid fa-circle-xmark mr-[0px] text-[24pt]"
                   style={
                     {
-                      "--fa-primary-color": "#fffff",
-                      "--fa-secondary-color": "#fffff",
+                      "--fa-primary-color": "#fff",
+                      "--fa-secondary-color": "#ff4141",
+                      "--fa-secondary-opacity": "1",
                     } as React.CSSProperties
                   }
                 ></i>
@@ -250,7 +249,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                   {/* Form Fields */}
 
                   <div className="mb-4.5 w-full">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                    <label className="mb-3 block text-sm font-medium text-[#000000] dark:text-white">
                       City
                     </label>
                     <input
@@ -303,7 +302,7 @@ const AreaManagement: React.FC<AnalyticsProps> = ({ locations }) => {
                   </div>
 
                   <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                    Send Message
+                    Add a place
                   </button>
                 </div>
               </form>
