@@ -22,23 +22,27 @@ export async function PATCH(
 
 // DELETE Route (Deleting a Generated Code)
 export async function DELETE(
-        { params }: { params: { locId: string } }
-  ) {
-    try {
-      
-      // Log the locId to confirm it's received correctly
-      console.log("Deleting location with ID:", params.locId);
-  
-      // Call the deleteLocation function
-      const deletedLocation = await deleteLocation({ id: params.locId });
-  
-      if (!deletedLocation) {
-        return new NextResponse("Location not found or failed to delete", { status: 404 });
-      }
-  
-      return NextResponse.json(deletedLocation);
-    } catch (error) {
-      console.error("[DELETE_LOCATION_ERROR]", error);
-      return new NextResponse("Internal Server Error", { status: 500 });
+  req: Request,
+  { params }: { params: { locId: string } },
+) {
+  try {
+    const { locId } = params;
+
+    // Log the locId to confirm it's received correctly
+    console.log("Deleting location with ID:", locId);
+
+    // Call the deleteLocation function
+    const deletedLocation = await deleteLocation({ id: locId });
+
+    if (!deletedLocation) {
+      return new NextResponse("Location not found or failed to delete", {
+        status: 406,
+      });
     }
+
+    return NextResponse.json(deletedLocation);
+  } catch (error) {
+    console.error("[DELETE_LOCATION_ERROR]", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
+}

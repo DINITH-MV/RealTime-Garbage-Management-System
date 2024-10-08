@@ -33,9 +33,10 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
 
   const filteredLocations = locationList.filter(
     (location) =>
-      location.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      location.apiUrl.toLowerCase().includes(searchTerm.toLowerCase())
+      (location.city?.toLowerCase().includes(searchTerm.toLowerCase()) || '') ||
+      (location.apiUrl?.toLowerCase().includes(searchTerm.toLowerCase()) || '')
   );
+  
 
   const totalEntries = locationList.length;
   const currentPage = 1; // Example value, this would typically come from state
@@ -137,7 +138,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
 
   const onDelete = async (codeId: string) => {
     try {
-      await axios.delete(`/api/codeGenerator/${codeId}`);
+      await axios.delete(`/api/Area-Management/${codeId}`);
       toast.success("Generated Code deleted");
 
       setLocationList((prevList) =>
