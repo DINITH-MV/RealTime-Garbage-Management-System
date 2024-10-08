@@ -1,5 +1,4 @@
 import Image from "next/image";
-import "../Dashboard/styles/index.css";
 
 const AuthLayout = ({
   children
