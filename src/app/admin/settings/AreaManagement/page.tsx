@@ -1,7 +1,7 @@
 import Analytics from "@/components/Dashboard/Analytics";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import getAllLocations from "../../../../actions/get-locations";
+import getAllLocations from "../../../../../actions/get-locations";
 import AreaManagement from "@/components/Settings/AreaManagement/AreaManagement";
 
 export const metadata: Metadata = {
@@ -10,13 +10,12 @@ export const metadata: Metadata = {
 };
 
 export default async function Settings() {
-
   const formattedLocations = await getAllLocations();
 
   return (
     <>
       <DefaultLayout>
-        <AreaManagement locations={formattedLocations}/>
+        <AreaManagement locations={formattedLocations} />
       </DefaultLayout>
     </>
   );

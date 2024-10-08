@@ -84,7 +84,7 @@ const menuGroups = [
 
         route: "#",
         children: [
-          { label: "Area Management", route: "/settings/AreaManagement" },
+          { label: "Area Management", route: "/admin/settings/AreaManagement" },
         ],
       },
       {
@@ -108,7 +108,7 @@ const menuGroups = [
           </svg>
         ),
         label: "Profile",
-        route: "/profile",
+        route: "/admin/profile",
       },
     ],
   },
