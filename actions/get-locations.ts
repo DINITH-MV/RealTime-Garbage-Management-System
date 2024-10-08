@@ -5,6 +5,7 @@ type LocationData = {
   id: string;
   city: string;
   apiUrl: string;
+  userId: string;
   marker: string;
   latitude: number;
   longitude: number;
@@ -24,6 +25,7 @@ export default async function getAllLocations(): Promise<LocationData[]> {
     id: location.id,
     city: location.city,
     apiUrl: location.apiUrl,
+    userId: location.userId,
     marker: location.marker,
     latitude: location.latitude,
     longitude: location.longitude,

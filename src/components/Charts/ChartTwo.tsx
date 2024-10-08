@@ -68,6 +68,7 @@ type LocationType = {
   id: string;
   city: string;
   apiUrl: string;
+  userId: string;
   marker: string;
   latitude: number;
   longitude: number;
@@ -81,7 +82,8 @@ interface LocationDataProps {
 const ChartTwo: React.FC<LocationDataProps> = ({ filteredLocations }) => {
   // Set the initial city to "SLIIT" if it exists, otherwise default to the first location
   const [selectedCity, setSelectedCity] = useState<LocationType | null>(
-    filteredLocations.find((location) => location.city === "SLIIT") || filteredLocations[0]
+    filteredLocations.find((location) => location.city === "SLIIT") ||
+      filteredLocations[0],
   );
 
   const [series, setSeries] = useState<{ name: string; data: number[] }[]>([
@@ -128,7 +130,7 @@ const ChartTwo: React.FC<LocationDataProps> = ({ filteredLocations }) => {
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCityName = event.target.value;
     const selectedCityData = filteredLocations.find(
-      (location) => location.city === selectedCityName
+      (location) => location.city === selectedCityName,
     );
 
     // Reset series and categories when a new city is selected
@@ -141,7 +143,7 @@ const ChartTwo: React.FC<LocationDataProps> = ({ filteredLocations }) => {
   // Function to generate and download CSV
   const downloadCSV = () => {
     const csvData = series.map((serie) =>
-      [serie.name, ...serie.data].join(",")
+      [serie.name, ...serie.data].join(","),
     );
 
     const csvContent =
@@ -194,7 +196,11 @@ const ChartTwo: React.FC<LocationDataProps> = ({ filteredLocations }) => {
               .slice()
               .reverse()
               .map((location, index) => (
-                <option key={index} value={location.city} className="dark:bg-boxdark">
+                <option
+                  key={index}
+                  value={location.city}
+                  className="dark:bg-boxdark"
+                >
                   {location.city}
                 </option>
               ))}

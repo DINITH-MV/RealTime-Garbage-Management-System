@@ -6,6 +6,7 @@ import "@/css/style.css";
 import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
 import { ClerkProvider } from "@clerk/nextjs";
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function RootLayout({
   children,
@@ -23,6 +24,28 @@ export default function RootLayout({
 
   return (
     <ClerkProvider>
+      <Toaster position="top-center"
+						reverseOrder={false}
+						gutter={13}
+						containerClassName=""
+						containerStyle={{}}
+						toastOptions={{
+							// Define default options
+							className: '',
+							duration: 5000,
+							style: {
+								background: '#363636',
+								color: '#fff',
+								boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.2)',
+								padding: '4px 4px 4px 8px',
+							},
+
+							// Default options for specific types
+							success: {
+								duration: 5555,
+							},
+						}}
+					/>
       <html lang="en">
         <head>
           <link

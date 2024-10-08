@@ -12,6 +12,7 @@ type LocationType = {
   id: string;
   city: string;
   apiUrl: string;
+  userId: string;
   marker: string;
   latitude: number;
   longitude: number;
@@ -90,24 +91,26 @@ const ChartOne: React.FC<LocationDataProps> = ({ filteredLocations }) => {
   const fetchDataFromAPI = async () => {
     try {
       // Find the location where city is "SLIIT"
-      const sliitLocation = filteredLocations.find(location => location.city === "SLIIT");
-  
+      const sliitLocation = filteredLocations.find(
+        (location) => location.city === "SLIIT",
+      );
+
       if (sliitLocation) {
         // Fetch data from the SLIIT location's apiUrl
         const response = await fetch(sliitLocation.apiUrl);
-  
+
         if (!response.ok) {
           throw new Error(`Failed to fetch data from ${sliitLocation.apiUrl}`);
         }
-  
+
         const data = await response.json();
-  
+
         // Update the series with the fetched data for "SLIIT"
-        const updatedSeries = series.map(s => ({
+        const updatedSeries = series.map((s) => ({
           ...s,
           data: s.name === "SLIIT" ? [...s.data.slice(1), data] : s.data, // Only update data for SLIIT
         }));
-  
+
         setSeries(updatedSeries);
       } else {
         console.log("SLIIT location not found");

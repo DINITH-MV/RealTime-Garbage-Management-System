@@ -20,6 +20,14 @@
       "database": "GarbageManagementSystem",
       "username": "postgres",
       "connectionTimeout": 30
+    },
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "driver": "PostgreSQL",
+      "name": "GMS Supabase",
+      "connectString": "postgresql://postgres.sbjgzigtbtgqftkhrpro:rqbC71UatF4ZFydL@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres",
+      "connectionTimeout": 8
     }
   ],
   "WillLuke.nextjs.addTypesOnSave": true,

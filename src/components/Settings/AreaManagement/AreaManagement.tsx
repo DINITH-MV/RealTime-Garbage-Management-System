@@ -9,6 +9,7 @@ type LocationData = {
   id: string;
   city: string;
   apiUrl: string;
+  userId: string;
   marker: string;
   latitude: number;
   longitude: number;
@@ -22,7 +23,9 @@ interface AreaManagementProps {
 const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState<LocationData | null>(null); // Used for updating
+  const [currentLocation, setCurrentLocation] = useState<LocationData | null>(
+    null,
+  ); // Used for updating
   const [locationList, setLocationList] = useState<LocationData[]>(locations); // Use local state for locations
 
   const openModal = () => setIsOpen(true);
@@ -33,10 +36,11 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
 
   const filteredLocations = locationList.filter(
     (location) =>
-      (location.city?.toLowerCase().includes(searchTerm.toLowerCase()) || '') ||
-      (location.apiUrl?.toLowerCase().includes(searchTerm.toLowerCase()) || '')
+      location.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      "" ||
+      location.apiUrl?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      "",
   );
-  
 
   const totalEntries = locationList.length;
   const currentPage = 1; // Example value, this would typically come from state
@@ -47,6 +51,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
   // State for form fields
   const [city, setCity] = useState("");
   const [apiUrl, setApiUrl] = useState("");
+  const [userId, setUserId] = useState("");
   const [marker, setMarker] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -56,6 +61,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
       // If editing, pre-fill the form
       setCity(currentLocation.city);
       setApiUrl(currentLocation.apiUrl);
+      setUserId(currentLocation.userId);
       setMarker(currentLocation.marker);
       setLatitude(currentLocation.latitude.toString());
       setLongitude(currentLocation.longitude.toString());
@@ -63,6 +69,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
       // Reset fields for new location
       setCity("");
       setApiUrl("");
+      setUserId("");
       setMarker("");
       setLatitude("");
       setLongitude("");
@@ -76,6 +83,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
     const locationData = {
       city,
       apiUrl,
+      userId,
       marker,
       latitude: parseFloat(latitude),
       longitude: parseFloat(longitude),
@@ -98,9 +106,10 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
           // Update the location in the local state
           setLocationList((prevList) =>
             prevList.map((loc) =>
-              loc.id === currentLocation.id ? { ...loc, ...locationData } : loc
-            )
+              loc.id === currentLocation.id ? { ...loc, ...locationData } : loc,
+            ),
           );
+          toast.success("Location updated!");
         }
       } else {
         // Adding a new location
@@ -116,11 +125,16 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
           const newLocation = await response.json(); // Assuming your API returns the created location with an ID
           // Add the new location to the local state
           setLocationList((prevList) => [...prevList, newLocation]);
+          toast.success("Location added!");
         }
       }
 
       if (response.ok) {
-        console.log(currentLocation ? "Location updated successfully!" : "Location added successfully!");
+        console.log(
+          currentLocation
+            ? "Location updated successfully!"
+            : "Location added successfully!",
+        );
         closeModal(); // Close the modal
       } else {
         console.error("Failed to save location.");
@@ -139,16 +153,15 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
   const onDelete = async (codeId: string) => {
     try {
       await axios.delete(`/api/Area-Management/${codeId}`);
-      toast.success("Generated Code deleted");
+      toast.success("Location deleted!");
 
       setLocationList((prevList) =>
-        prevList.filter((loc) => loc.id !== codeId)
+        prevList.filter((loc) => loc.id !== codeId),
       );
     } catch {
       toast.error("Something went wrong");
     }
   };
-
 
   return (
     <div>
@@ -207,7 +220,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
                         Blynk Key
                       </th>
-                      <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
+                      <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-center font-semibold uppercase tracking-wider">
                         Marker
                       </th>
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
@@ -215,6 +228,9 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       </th>
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
                         Longitude
+                      </th>
+                      <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-center font-semibold uppercase tracking-wider">
+                        UserID
                       </th>
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2  px-5 py-3  text-left font-semibold uppercase tracking-wider">
                         Actions
@@ -232,8 +248,10 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                             {location.city}
                           </p>
                         </td>
-                        <td className="border-gray-200 max-w-[260px] overflow-hidden text-ellipsis whitespace-nowrap border-b px-5 py-5 text-[14pt]">
-                          <p className="text-gray-900 ">{location.apiUrl}</p>
+                        <td className="border-gray-200 max-w-[260px] border-b px-5 py-5 text-[14pt]">
+                          <p className="text-gray-900 overflow-hidden text-ellipsis whitespace-nowrap">
+                            {location.apiUrl}
+                          </p>
                         </td>
                         <td className="border-gray-200 border-b px-5 py-5 text-[14pt]">
                           <div className="flex items-center">
@@ -254,6 +272,11 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                             {location.longitude}
                           </p>
                         </td>
+                        <td className="border-gray-200 border-b px-5 py-5 text-[14pt]">
+                          <p className="text-gray-900 max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-center">
+                            {location.userId}
+                          </p>
+                        </td>
                         <td className="border-gray-200 flex border-b border-b-[#fff] px-5 py-5 text-[14pt] dark:border-b-[#fff]">
                           <button
                             className="rounded-[7px] bg-[#cee797] p-[8px]"
@@ -269,7 +292,10 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                               }
                             ></i>
                           </button>
-                          <button className="text-red-600 hover:text-red-900 ml-2 rounded-[7px] bg-[#fae6d1] p-[9px]" onClick={()=>onDelete(location.id)}>
+                          <button
+                            className="text-red-600 hover:text-red-900 ml-2 rounded-[7px] bg-[#fae6d1] p-[9px]"
+                            onClick={() => onDelete(location.id)}
+                          >
                             <i
                               className="fa-duotone fa-solid fa-trash text-[18pt]"
                               style={
@@ -306,17 +332,17 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
 
       {/* Modal (Pop-Up) */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 mt-[40px] flex items-center justify-center bg-black bg-opacity-50">
-          <div className="flex w-[30%] min-w-[400px] flex-col gap-9">
+        <div className="fixed inset-0 z-50 mt-[50px] flex items-center justify-center bg-black bg-opacity-50">
+          <div className="flex max-h-[700px] w-[30%] min-w-[380px] flex-col gap-7">
             <div className="rounded-[16px] border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-              <div className=" border-stroke px-6.5 py-4 dark:border-strokedark">
+              <div className=" border-stroke px-6.5 py-1 dark:border-strokedark">
                 <div className="float-right ">
                   <button
                     onClick={closeModal}
                     className="bg-red-500 hover:bg-red-600 rounded-lg text-black"
                   >
                     <i
-                      className="fa-duotone fa-solid fa-circle-xmark mr-[0px] text-[24pt]"
+                      className="fa-duotone fa-solid fa-circle-xmark mr-[0px] mt-[5px] text-[24pt]"
                       style={
                         {
                           "--fa-primary-color": "#fff",
@@ -387,6 +413,18 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       type="text"
                       value={longitude}
                       onChange={(e) => setLongitude(e.target.value)}
+                      placeholder="Eg: 65.8612"
+                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                  <div className="mb-4.5">
+                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                      UserID
+                    </label>
+                    <input
+                      type="text"
+                      value={userId}
+                      onChange={(e) => setUserId(e.target.value)}
                       placeholder="Eg: 65.8612"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />

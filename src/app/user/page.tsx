@@ -26,7 +26,7 @@ export default async function User() {
   // Conditionally render the page based on whether the user is an admin
   return (
     <DefaultLayout>
-      <Analytics locations={formattedLocations} />
+      <div>Create the Appointments page</div>
     </DefaultLayout>
   );
 }

@@ -18,22 +18,28 @@ type LocationData = {
   id: string;
   city: string;
   apiUrl: string;
+  userId: string;
   marker: string;
   latitude: number;
   longitude: number;
   createdAt: string;
 };
 interface AnalyticsProps {
-  locations: LocationData[]
+  locations: LocationData[];
 }
 
-const Analytics: React.FC<AnalyticsProps> = ({locations}) => {
-  const [filteredLocations, setFilteredLocations] = useState<LocationData[]>(locations);
+const Analytics: React.FC<AnalyticsProps> = ({ locations }) => {
+  const [filteredLocations, setFilteredLocations] =
+    useState<LocationData[]>(locations);
 
   useEffect(() => {
-    const results = locations.filter(location =>
-      location.city &&
-      location.apiUrl && location.latitude && location.longitude && location.createdAt
+    const results = locations.filter(
+      (location) =>
+        location.city &&
+        location.apiUrl &&
+        location.latitude &&
+        location.longitude &&
+        location.createdAt,
     );
     setFilteredLocations(results);
   }, [locations]);
@@ -42,11 +48,10 @@ const Analytics: React.FC<AnalyticsProps> = ({locations}) => {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5"></div>
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <ChartOne filteredLocations={filteredLocations}/>
+        <ChartOne filteredLocations={filteredLocations} />
         <ChartTwo filteredLocations={filteredLocations} />
         <ChartThree filteredLocations={filteredLocations} />
-        <MapOne filteredLocations={filteredLocations} />   
-             
+        <MapOne filteredLocations={filteredLocations} />
       </div>
     </>
   );

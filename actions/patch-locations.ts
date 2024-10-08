@@ -4,6 +4,7 @@ type LocationDataUpdateInput = {
   id: string;
   city?: string;
   apiUrl?: string;
+  userId?: string;
   marker?: string;
   latitude?: number;
   longitude?: number;
@@ -13,13 +14,16 @@ type LocationData = {
   id: string;
   city: string;
   apiUrl: string;
+  userId: string;
   marker: string;
   latitude: number;
   longitude: number;
   createdAt: Date;
 };
 
-export default async function updateLocation(data: LocationDataUpdateInput): Promise<LocationData | null> {
+export default async function updateLocation(
+  data: LocationDataUpdateInput,
+): Promise<LocationData | null> {
   const { id, ...updateData } = data;
 
   try {
@@ -33,7 +37,7 @@ export default async function updateLocation(data: LocationDataUpdateInput): Pro
       where: { id },
       data: updateData,
     });
-console.log(id)
+    console.log(id);
     // Return the updated location
     return updatedLocation;
   } catch (error) {

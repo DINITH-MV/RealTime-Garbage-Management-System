@@ -62,6 +62,7 @@ type LocationType = {
   id: string;
   city: string;
   apiUrl: string;
+  userId: string;
   marker: string;
   latitude: number;
   longitude: number;
@@ -76,7 +77,8 @@ const ChartThree: React.FC<LocationDataProps> = ({ filteredLocations }) => {
   // State to store the real-time series data
   const [series, setSeries] = useState<number[]>([0, 0]);
   const [selectedCity, setSelectedCity] = useState<LocationType | null>(
-    filteredLocations.find((location) => location.city === "SLIIT") || filteredLocations[0]
+    filteredLocations.find((location) => location.city === "SLIIT") ||
+      filteredLocations[0],
   );
 
   // Function to fetch real-time data based on the selected city's API URL
@@ -110,7 +112,7 @@ const ChartThree: React.FC<LocationDataProps> = ({ filteredLocations }) => {
   const handleCityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCityName = event.target.value;
     const selectedCityData = filteredLocations.find(
-      (location) => location.city === selectedCityName
+      (location) => location.city === selectedCityName,
     );
 
     // Update the selected city and reset the chart data
@@ -139,7 +141,11 @@ const ChartThree: React.FC<LocationDataProps> = ({ filteredLocations }) => {
                 .slice()
                 .reverse()
                 .map((location, index) => (
-                  <option key={index} value={location.city} className="dark:bg-boxdark">
+                  <option
+                    key={index}
+                    value={location.city}
+                    className="dark:bg-boxdark"
+                  >
                     {location.city}
                   </option>
                 ))}
