@@ -3,7 +3,7 @@
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 type LocationData = {
   id: string;
@@ -101,6 +101,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
           },
           body: JSON.stringify(locationData),
         });
+        toast.success("Location updated!");
 
         if (response.ok) {
           // Update the location in the local state
@@ -109,7 +110,6 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
               loc.id === currentLocation.id ? { ...loc, ...locationData } : loc,
             ),
           );
-          toast.success("Location updated!");
         }
       } else {
         // Adding a new location
@@ -122,10 +122,8 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
         });
 
         if (response.ok) {
-          const newLocation = await response.json(); // Assuming your API returns the created location with an ID
-          // Add the new location to the local state
-          setLocationList((prevList) => [...prevList, newLocation]);
           toast.success("Location added!");
+          window.location.reload();
         }
       }
 
