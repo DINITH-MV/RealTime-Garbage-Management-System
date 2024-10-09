@@ -102,6 +102,9 @@ const Header = (props: {
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
+        <button className="inline-flex dark:bg-[rgb(255,203,248)] bg-[#ffeece] border-[3px] border-white items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 py-3">
+              <p className="text-[14pt] dark:text-[#000] ">Teacher mode</p>
+            </button>
           <ul className="flex items-center gap-2 2xsm:gap-4">
             {/* <!-- Dark Mode Toggler --> */}
             <DarkModeSwitcher />
