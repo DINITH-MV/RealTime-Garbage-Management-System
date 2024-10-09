@@ -2,6 +2,7 @@ import Link from "next/link";
 import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
+
 import Image from "next/image";
 
 const Header = (props: {
@@ -102,6 +103,9 @@ const Header = (props: {
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
+        <Button size="default" variant="ghost">
+              <p className="text-[14pt] dark:text-[#000] ">Teacher mode</p>
+            </Button>
           <ul className="flex items-center gap-2 2xsm:gap-4">
             {/* <!-- Dark Mode Toggler --> */}
             <DarkModeSwitcher />
