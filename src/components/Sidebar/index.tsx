@@ -146,7 +146,7 @@ const userRoutes = [
           </svg>
         ),
         label: "Appointments",
-        route: "/",
+        route: "/user",
       },
       {
         icon: (
@@ -216,7 +216,16 @@ const userRoutes = [
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
-  const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
+  const [isAdminPage, setIsAdminPage] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Check if the URL contains the word "admin"
+      const currentUrl = window.location.href;
+      setIsAdminPage(currentUrl.includes('admin'));
+    }
+  }, []);
+  const [pageName, setPageName] = useLocalStorage("selectedMenu", isAdminPage ? 'dashboards' : 'appointments');
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>

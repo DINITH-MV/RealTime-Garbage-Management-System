@@ -3,11 +3,28 @@ import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+  const [isAdminPage, setIsAdminPage] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Check if the URL contains the word "admin"
+      const currentUrl = window.location.href;
+      setIsAdminPage(currentUrl.includes('admin'));
+    }
+  }, []);
+
+  const router = useRouter();
+
+  const handleNavigate = () => {
+    router.push('/user'); // Navigate to the specified destination
+  };
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
@@ -101,11 +118,19 @@ const Header = (props: {
           </form>
         </div>
 
-        <div className="flex items-center gap-3 2xsm:gap-7">
-        <button className="inline-flex dark:bg-[rgb(255,203,248)] bg-[#ffeece] border-[3px] border-white items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-9 px-3 py-3">
+        <div className="2xsm:gap-7 flex items-center gap-3">
+        {isAdminPage ? (
+            // Redirect to a 403 error page
+
+            <button onClick={handleNavigate} className="ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]">
+              <p className="text-[14pt] dark:text-[#000] ">Client mode</p>
+            </button>
+          ) : (
+            <button className="ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]">
               <p className="text-[14pt] dark:text-[#000] ">Teacher mode</p>
             </button>
-          <ul className="flex items-center gap-2 2xsm:gap-4">
+          )}
+          <ul className="2xsm:gap-4 flex items-center gap-2">
             {/* <!-- Dark Mode Toggler --> */}
             <DarkModeSwitcher />
             {/* <!-- Dark Mode Toggler --> */}
@@ -114,7 +139,6 @@ const Header = (props: {
             <DropdownNotification />
             {/* <!-- Notification Menu Area --> */}
           </ul>
-
           {/* <!-- User Area --> */}
           <DropdownUser />
           {/* <!-- User Area --> */}
