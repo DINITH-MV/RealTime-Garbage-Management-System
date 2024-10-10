@@ -184,7 +184,7 @@ const userRoutes = [
 
         route: "#",
         children: [
-          { label: "Area Management", route: "/user/settings/AreaManagement" },
+          { label: "Appointment Schedule", route: "/user/settings/AppointmentManagement" },
         ],
       },
       {

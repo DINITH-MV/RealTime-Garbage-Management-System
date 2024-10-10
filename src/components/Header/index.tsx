@@ -23,7 +23,11 @@ const Header = (props: {
   const router = useRouter();
 
   const handleNavigate = () => {
-    router.push('/user'); // Navigate to the specified destination
+    if (isAdminPage) {
+      router.push('/user'); // Navigate to '/user' if admin
+    } else {
+      router.push('/admin'); // Navigate to '/admin' if not admin
+    }
   };
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
@@ -126,8 +130,8 @@ const Header = (props: {
               <p className="text-[14pt] dark:text-[#000] ">Client mode</p>
             </button>
           ) : (
-            <button className="ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]">
-              <p className="text-[14pt] dark:text-[#000] ">Teacher mode</p>
+            <button onClick={handleNavigate} className="ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]">
+              <p className="text-[14pt] dark:text-[#000] ">Admin mode</p>
             </button>
           )}
           <ul className="2xsm:gap-4 flex items-center gap-2">
