@@ -1,4 +1,4 @@
-import { db } from "../lib/db"; // Importing the db from your Prisma client
+import LocationRepository from "../repositories/LocationRepository";
 
 type LocationDataInput = {
   city: string;
@@ -21,17 +21,8 @@ type LocationData = {
 export default async function addLocation(
   data: LocationDataInput,
 ): Promise<LocationData> {
-  // Add a new location to the database
-  const newLocation = await db.location.create({
-    data: {
-      city: data.city,
-      apiUrl: data.apiUrl,
-      marker: data.marker,
-      latitude: data.latitude,
-      longitude: data.longitude,
-    },
-  });
-
-  // Return the newly created location
+  const locationRepo = new LocationRepository();
+  const newLocation = await locationRepo.addLocation(data);
+  
   return newLocation;
 }
