@@ -1,8 +1,9 @@
-import { db } from "../lib/db"; // Importing the db from your Prisma client
-import { format } from "date-fns"; // Importing the format function from date-fns
+import { db } from "../lib/db";
+import { format } from "date-fns";
+import LocationRepository from "../repositories/LocationRepository"; // Import the repository
 
 type LocationData = {
-  id: string;
+  binId: string;
   city: string;
   apiUrl: string;
   marker: string;
@@ -11,20 +12,18 @@ type LocationData = {
   createdAt: string;
 };
 
+// Create an instance of the LocationRepository
+const locationRepo = new LocationRepository();
+
 export default async function getAllLocations(): Promise<LocationData[]> {
-  // Fetch all locations from the database, ordered by creation date (descending)
-  const LOCATION = await db.location.findMany({
-    orderBy: {
-      createdAt: "desc", // Order by creation date
-    },
-  });
+  // Fetch all locations from the repository
+  const LOCATION = await locationRepo.getAllLocations();
 
   // Format the `createdAt` field to a specific date-time string format
   const formattedLocations: LocationData[] = LOCATION.map((location) => ({
-    id: location.id,
+    binId: location.binId,
     city: location.city,
     apiUrl: location.apiUrl,
-    userId: location.userId,
     marker: location.marker,
     latitude: location.latitude,
     longitude: location.longitude,

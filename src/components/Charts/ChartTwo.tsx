@@ -65,7 +65,7 @@ const options: ApexOptions = {
 };
 
 type LocationType = {
-  id: string;
+  binId: string;
   city: string;
   apiUrl: string;
   marker: string;

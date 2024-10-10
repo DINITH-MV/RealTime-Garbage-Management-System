@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 type LocationData = {
-  id: string;
+  binId: string;
   city: string;
   apiUrl: string;
   marker: string;
@@ -89,7 +89,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
 
       if (currentLocation) {
         // Updating an existing location
-        response = await fetch(`/api/Area-Management/${currentLocation.id}`, {
+        response = await fetch(`/api/Area-Management/${currentLocation.binId}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -102,7 +102,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
           // Update the location in the local state
           setLocationList((prevList) =>
             prevList.map((loc) =>
-              loc.id === currentLocation.id ? { ...loc, ...locationData } : loc,
+              loc.binId === currentLocation.binId ? { ...loc, ...locationData } : loc,
             ),
           );
         }
@@ -143,13 +143,13 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
     openModal();
   };
 
-  const onDelete = async (codeId: string) => {
+  const onDelete = async (binId: string) => {
     try {
-      await axios.delete(`/api/Area-Management/${codeId}`);
+      await axios.delete(`/api/Area-Management/${binId}`);
       toast.success("Location deleted!");
 
       setLocationList((prevList) =>
-        prevList.filter((loc) => loc.id !== codeId),
+        prevList.filter((loc) => loc.binId !== binId),
       );
     } catch {
       toast.error("Something went wrong");
@@ -208,12 +208,15 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                   <thead className="bg-[#15752e] text-[#f5fbf0] dark:bg-[#174312]">
                     <tr>
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
+                        Bin-ID
+                      </th>
+                      <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
                         Location
                       </th>
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
                         Blynk Key
                       </th>
-                      <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-center font-semibold uppercase tracking-wider">
+                      <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
                         Marker
                       </th>
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
@@ -222,7 +225,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
                         Longitude
                       </th>
-                     
+
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2  px-5 py-3  text-left font-semibold uppercase tracking-wider">
                         Actions
                       </th>
@@ -231,15 +234,20 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                   <tbody>
                     {filteredLocations.map((location) => (
                       <tr
-                        key={location.id}
+                        key={location.binId}
                         className="border-gray-200 border-b dark:border-[#1a4e17] dark:bg-[#23621c] dark:text-[#fff]"
                       >
+                        <td className="border-gray-200 max-w-[120px] border-b px-5 py-5 text-[14pt]">
+                          <p className="text-gray-900  overflow-hidden text-ellipsis whitespace-nowrap">
+                            {location.binId}
+                          </p>
+                        </td>
                         <td className="border-gray-200 border-b px-5 py-5 text-[14pt]">
                           <p className="text-gray-900 whitespace-no-wrap">
                             {location.city}
                           </p>
                         </td>
-                        <td className="border-gray-200 max-w-[260px] border-b px-5 py-5 text-[14pt]">
+                        <td className="border-gray-200 max-w-[270px] border-b px-5 py-5 text-[14pt]">
                           <p className="text-gray-900 overflow-hidden text-ellipsis whitespace-nowrap">
                             {location.apiUrl}
                           </p>
@@ -263,7 +271,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                             {location.longitude}
                           </p>
                         </td>
-                        
+
                         <td className="border-gray-200 flex border-b border-b-[#fff] px-5 py-5 text-[14pt] dark:border-b-[#fff]">
                           <button
                             className="rounded-[7px] bg-[#cee797] p-[8px]"
@@ -281,7 +289,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                           </button>
                           <button
                             className="text-red-600 hover:text-red-900 ml-2 rounded-[7px] bg-[#fae6d1] p-[9px]"
-                            onClick={() => onDelete(location.id)}
+                            onClick={() => onDelete(location.binId)}
                           >
                             <i
                               className="fa-duotone fa-solid fa-trash text-[18pt]"
@@ -404,7 +412,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-                  
+
                   <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
                     {currentLocation ? "Update Location" : "Add a Place"}
                   </button>

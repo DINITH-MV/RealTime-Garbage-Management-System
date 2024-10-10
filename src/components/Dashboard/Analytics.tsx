@@ -15,7 +15,7 @@ const ChartThree = dynamic(() => import("@/components/Charts/ChartThree"), {
 });
 
 type LocationData = {
-  id: string;
+  binId: string;
   city: string;
   apiUrl: string;
   marker: string;

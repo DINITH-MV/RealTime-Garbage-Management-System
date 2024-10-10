@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Location {
-  binId     String   @id @default(auto()) 
+  binId     String   @id @default(dbgenerated("gen_random_uuid()")) // Use PostgreSQL's function to generate a UUID
   city      String
   apiUrl    String
   marker    String

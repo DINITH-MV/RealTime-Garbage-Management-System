@@ -9,7 +9,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 type LocationType = {
-  id: string;
+  binId: string;
   city: string;
   apiUrl: string;
   marker: string;

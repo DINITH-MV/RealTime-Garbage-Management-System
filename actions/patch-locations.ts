@@ -1,17 +1,16 @@
 import { db } from "../lib/db"; // Importing the db from your Prisma client
 
 type LocationDataUpdateInput = {
-  id: string;
+  binId: string;
   city?: string;
   apiUrl?: string;
-  userId?: string;
   marker?: string;
   latitude?: number;
   longitude?: number;
 };
 
 type LocationData = {
-  id: string;
+  binId: string;
   city: string;
   apiUrl: string;
   marker: string;
@@ -23,20 +22,20 @@ type LocationData = {
 export default async function updateLocation(
   data: LocationDataUpdateInput,
 ): Promise<LocationData | null> {
-  const { id, ...updateData } = data;
+  const { binId, ...updateData } = data;
 
   try {
     // Ensure that the id is provided
-    if (!id) {
+    if (!binId) {
       throw new Error("ID is required for updating location.");
     }
 
     // Update the location with the fields provided
     const updatedLocation = await db.location.update({
-      where: { id },
+      where: { binId },
       data: updateData,
     });
-    console.log(id);
+    console.log(binId);
     // Return the updated location
     return updatedLocation;
   } catch (error) {

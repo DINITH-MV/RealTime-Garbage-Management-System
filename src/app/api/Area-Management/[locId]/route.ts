@@ -11,7 +11,7 @@ export async function PATCH(
     const { locId } = params;
     const values = await req.json();
 
-    const genCode = await updateLocation({ id: locId, ...values });
+    const genCode = await updateLocation({ binId: locId, ...values });
     console.log(locId);
     return NextResponse.json(genCode);
   } catch (error) {
@@ -32,7 +32,7 @@ export async function DELETE(
     console.log("Deleting location with ID:", locId);
 
     // Call the deleteLocation function
-    const deletedLocation = await deleteLocation({ id: locId });
+    const deletedLocation = await deleteLocation({ binId: locId });
 
     if (!deletedLocation) {
       return new NextResponse("Location not found or failed to delete", {

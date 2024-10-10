@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import "../../js/Colombo"; // Make sure the map file for Colombo is correctly referenced
 
 type LocationType = {
-  id: string;
+  binId: string;
   city: string;
   apiUrl: string;
   marker: string;

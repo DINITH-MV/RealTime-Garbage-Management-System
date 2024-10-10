@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Location" (
-    "id" TEXT NOT NULL,
+    "binId" TEXT NOT NULL,
     "city" TEXT NOT NULL,
     "apiUrl" TEXT NOT NULL,
     "marker" TEXT NOT NULL,

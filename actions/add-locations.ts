@@ -9,7 +9,7 @@ type LocationDataInput = {
 };
 
 type LocationData = {
-  id: string;
+  binId: string;
   city: string;
   apiUrl: string;
   marker: string;

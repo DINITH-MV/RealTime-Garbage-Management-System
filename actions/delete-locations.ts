@@ -1,11 +1,11 @@
 import { db } from "../lib/db"; // Importing the db from your Prisma client
 
 type LocationDataDeleteInput = {
-  id: string;
+  binId: string;
 };
 
 type LocationData = {
-  id: string;
+  binId: string;
   city: string;
   apiUrl: string;
   marker: string;
@@ -17,29 +17,29 @@ type LocationData = {
 export default async function deleteLocation(
   data: LocationDataDeleteInput,
 ): Promise<LocationData | null> {
-  const { id } = data;
+  const { binId } = data;
   try {
     // Ensure that the id is provided
-    if (!id) {
+    if (!binId) {
       throw new Error("ID is required for deleting location.");
     }
 
     // Check if the location exists before attempting to delete
     const location = await db.location.findUnique({
-      where: { id },
+      where: { binId },
     });
 
     if (!location) {
-      console.error(`[deleteLocation] Location with ID ${id} not found.`);
+      console.error(`[deleteLocation] Location with ID ${binId} not found.`);
       return null; // Return null if location doesn't exist
     }
 
     // Proceed to delete the location if found
     const deletedLocation = await db.location.delete({
-      where: { id },
+      where: { binId },
     });
 
-    console.log("Deleted Location ID:", id);
+    console.log("Deleted Location ID:", binId);
 
     // Return the deleted location data
     return deletedLocation;
