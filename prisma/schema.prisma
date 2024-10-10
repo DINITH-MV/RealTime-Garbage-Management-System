@@ -14,9 +14,8 @@ datasource db {
 }
 
 model Location {
-  id        String   @id @default(uuid())
+  binId     String   @id @default(auto()) 
   city      String
-  userId    String
   apiUrl    String
   marker    String
   latitude  Float

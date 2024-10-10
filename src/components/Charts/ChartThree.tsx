@@ -62,7 +62,6 @@ type LocationType = {
   id: string;
   city: string;
   apiUrl: string;
-  userId: string;
   marker: string;
   latitude: number;
   longitude: number;

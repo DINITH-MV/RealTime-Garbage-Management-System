@@ -9,7 +9,6 @@ type LocationData = {
   id: string;
   city: string;
   apiUrl: string;
-  userId: string;
   marker: string;
   latitude: number;
   longitude: number;
@@ -51,7 +50,6 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
   // State for form fields
   const [city, setCity] = useState("");
   const [apiUrl, setApiUrl] = useState("");
-  const [userId, setUserId] = useState("");
   const [marker, setMarker] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -61,7 +59,6 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
       // If editing, pre-fill the form
       setCity(currentLocation.city);
       setApiUrl(currentLocation.apiUrl);
-      setUserId(currentLocation.userId);
       setMarker(currentLocation.marker);
       setLatitude(currentLocation.latitude.toString());
       setLongitude(currentLocation.longitude.toString());
@@ -69,7 +66,6 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
       // Reset fields for new location
       setCity("");
       setApiUrl("");
-      setUserId("");
       setMarker("");
       setLatitude("");
       setLongitude("");
@@ -83,7 +79,6 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
     const locationData = {
       city,
       apiUrl,
-      userId,
       marker,
       latitude: parseFloat(latitude),
       longitude: parseFloat(longitude),
@@ -227,9 +222,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-left font-semibold uppercase tracking-wider">
                         Longitude
                       </th>
-                      <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3  text-center font-semibold uppercase tracking-wider">
-                        UserID
-                      </th>
+                     
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2  px-5 py-3  text-left font-semibold uppercase tracking-wider">
                         Actions
                       </th>
@@ -270,11 +263,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                             {location.longitude}
                           </p>
                         </td>
-                        <td className="border-gray-200 border-b px-5 py-5 text-[14pt]">
-                          <p className="text-gray-900 max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-center">
-                            {location.userId}
-                          </p>
-                        </td>
+                        
                         <td className="border-gray-200 flex border-b border-b-[#fff] px-5 py-5 text-[14pt] dark:border-b-[#fff]">
                           <button
                             className="rounded-[7px] bg-[#cee797] p-[8px]"
@@ -415,18 +404,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-                  <div className="mb-4.5">
-                    <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-                      UserID
-                    </label>
-                    <input
-                      type="text"
-                      value={userId}
-                      onChange={(e) => setUserId(e.target.value)}
-                      placeholder="Eg: 65.8612"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                  </div>
+                  
                   <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
                     {currentLocation ? "Update Location" : "Add a Place"}
                   </button>
