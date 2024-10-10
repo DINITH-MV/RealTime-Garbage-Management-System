@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { SignedIn } from "@clerk/nextjs";
 import getAllLocations from "../../../actions/get-locations";
+import { checkRole } from '@/utils/roles'
 
 export const metadata: Metadata = {
   title: "RealTime Garbage Management System",
@@ -15,12 +16,14 @@ export default async function User() {
 
   const { userId } = auth();
 
+  const isAdmin = checkRole('admin'); // Perform role check server-side
+
   if (!userId ) {
     return redirect("/auth/sign-in");
   }
 
   return (
-    <DefaultLayout>
+    <DefaultLayout isAdmin={isAdmin}>
       <div>Create the Appointments page</div>
     </DefaultLayout>
   );

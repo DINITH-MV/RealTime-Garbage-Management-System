@@ -5,8 +5,10 @@ import Header from "@/components/Header";
 
 export default function DefaultLayout({
   children,
+  isAdmin
 }: {
   children: React.ReactNode;
+  isAdmin?: boolean;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
@@ -20,7 +22,7 @@ export default function DefaultLayout({
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col lg:ml-72.5">
           {/* <!-- ===== Header Start ===== --> */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} isAdmin={isAdmin}/>
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}
