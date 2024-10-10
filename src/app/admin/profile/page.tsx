@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import image1 from "../../../../public/images/user/user-01.png"
 import Link from "next/link";
+import { checkRole } from '@/utils/roles'
 
 export const metadata: Metadata = {
   title:
@@ -13,8 +14,9 @@ export const metadata: Metadata = {
 };
 
 const Profile = () => {
+  const isAdmin = checkRole('admin'); // Perform role check server-side
   return (
-    <DefaultLayout>
+    <DefaultLayout isAdmin={isAdmin}>
       <div className="mx-auto max-w-242.5">
         <Breadcrumb pageName="Profile" />
 
