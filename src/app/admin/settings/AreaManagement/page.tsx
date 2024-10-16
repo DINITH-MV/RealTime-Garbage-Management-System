@@ -2,8 +2,8 @@ import Analytics from "@/components/Dashboard/Analytics";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import getAllLocations from "../../../../../actions/get-locations";
-import AreaManagement from "@/components/Settings/AreaManagement/AreaManagement";
-import { checkRole } from '@/utils/roles'
+import AreaManagement from "@/components/Settings/AppointmentManagement/AppointmentManagement";
+import { checkRole } from "@/utils/roles";
 
 export const metadata: Metadata = {
   title: "RealTime Garbage Management System",
@@ -12,12 +12,12 @@ export const metadata: Metadata = {
 
 export default async function Settings() {
   const formattedLocations = await getAllLocations();
-  const isAdmin = checkRole('admin'); // Perform role check server-side
+  const isAdmin = checkRole("admin"); // Perform role check server-side
 
   return (
     <>
-    <DefaultLayout isAdmin={isAdmin}>
-    <AreaManagement locations={formattedLocations} />
+      <DefaultLayout isAdmin={isAdmin}>
+        <AreaManagement locations={formattedLocations} />
       </DefaultLayout>
     </>
   );

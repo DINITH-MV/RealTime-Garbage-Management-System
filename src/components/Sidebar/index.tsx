@@ -185,7 +185,7 @@ const userRoutes = [
         route: "#",
         children: [
           { label: "Appointment Schedule", route: "/user/settings/AppointmentManagement" },
-          { label: "Payement", route: "/user/settings/Payment" },
+          { label: "Payment", route: "/user/settings/Payment" },
         ],
       },
       {
