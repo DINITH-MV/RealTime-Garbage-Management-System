@@ -22,3 +22,11 @@ model Location {
   longitude Float
   createdAt DateTime @default(now())
 }
+
+model Topic {
+  id          Int      @id @default(autoincrement())
+  location    String
+  type        String
+  description String
+  date        DateTime? @default(now())
+}

@@ -2,9 +2,10 @@ import Analytics from "@/components/Dashboard/Analytics";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import getAllLocations from "../../../../../actions/get-locations";
-import AreaManagement from "@/components/Settings/AppointmentManagement/AppointmentManagement";
+import AreaManagement from "@/components/Settings/AppointmentManagement/AddAppointment";
 import { checkRole } from "@/utils/roles";
-import AppointmentManagement from "@/components/Settings/AppointmentManagement/AppointmentManagement";
+import AppointmentManagement from "@/components/Settings/AppointmentManagement/AddAppointment";
+import ManageAppointment from "@/components/Settings/AppointmentManagement/ManageAppointment";
 
 export const metadata: Metadata = {
   title: "RealTime Garbage Management System",
@@ -17,7 +18,7 @@ export default async function Settings() {
   return (
     <>
       <DefaultLayout isAdmin={isAdmin}>
-        <AppointmentManagement />
+        <ManageAppointment />
       </DefaultLayout>
     </>
   );
