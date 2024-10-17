@@ -23,7 +23,7 @@ model Location {
   createdAt DateTime @default(now())
 }
 
-model Topic {
+model Appointment {
   id          Int      @id @default(autoincrement())
   location    String
   type        String

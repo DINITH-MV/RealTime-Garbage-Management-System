@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
-// POST request: Create a new topic with location, type, description, and date
+// POST request: Create a new Appointment with location, type, description, and date
 export async function POST(request: NextRequest) {
   try {
     // Parse the request body to extract data
@@ -15,8 +15,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Location, type, and description are required" }, { status: 400 });
     }
     
-    // Create the new topic, auto-generating the ID
-    const newTopic = await prisma.topic.create({
+    // Create the new Appointment, auto-generating the ID
+    const newAppointment = await prisma.appointment.create({
       data: {
         location,
         type,
@@ -25,31 +25,31 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Respond with success message and new topic data
-    return NextResponse.json({ message: "Topic Created", newTopic }, { status: 201 });
+    // Respond with success message and new Appointment data
+    return NextResponse.json({ message: "Appointment Created", newAppointment }, { status: 201 });
   } catch (error) {
     // Handle any errors and respond with a meaningful message
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    return NextResponse.json({ message: "Error creating topic", error: errorMessage }, { status: 500 });
+    return NextResponse.json({ message: "Error creating Appointment", error: errorMessage }, { status: 500 });
   }
 }
 
-// GET request: Fetch all topics
+// GET request: Fetch all Appointments
 export async function GET() {
-  const topics = await prisma.topic.findMany();
-  return NextResponse.json({ topics });
+  const Appointments = await prisma.appointment.findMany();
+  return NextResponse.json({ Appointments });
 }
 
-// DELETE request: Delete a topic by its ID
+// DELETE request: Delete a Appointment by its ID
 export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
 
-  // Find the topic by its ID and delete it
-  await prisma.topic.delete({
+  // Find the Appointment by its ID and delete it
+  await prisma.appointment.delete({
     where: {
       id: id ? parseInt(id) : 0, // Ensure the ID is a number if using an integer ID field
     },
   });
 
-  return NextResponse.json({ message: "Topic deleted" }, { status: 200 });
+  return NextResponse.json({ message: "Appointment deleted" }, { status: 200 });
 }

@@ -1,7 +1,7 @@
 "use client";
 
-// Define the Topic interface
-interface Topic {
+// Define the Appointment interface
+interface Appointment {
   id: string;
   location: string;
   type: string;
@@ -23,11 +23,11 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg relative">
+    <div className="bg-gray-600 fixed inset-0 z-50 flex items-center justify-center bg-opacity-50">
+      <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+          className="text-gray-500 hover:text-gray-800 absolute right-2 top-2"
         >
           &times;
         </button>
@@ -37,7 +37,7 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
   );
 }
 
-// Add Topic Form (AddManagement)
+// Add Appointment Form (AddManagement)
 function AddManagement({ onSubmit }: { onSubmit: () => void }) {
   const [location, setLocation] = useState("");
   const [type, setType] = useState("");
@@ -48,7 +48,7 @@ function AddManagement({ onSubmit }: { onSubmit: () => void }) {
     e.preventDefault();
 
     try {
-      const res = await fetch("/api/topics", {
+      const res = await fetch("/api/Appointments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ function AddManagement({ onSubmit }: { onSubmit: () => void }) {
       if (res.ok) {
         onSubmit();
       } else {
-        throw new Error("Failed to add topic");
+        throw new Error("Failed to add Appointment");
       }
     } catch (error) {
       console.error(error);
@@ -69,50 +69,59 @@ function AddManagement({ onSubmit }: { onSubmit: () => void }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="flex flex-col">
-        <label className="text-gray-700 font-semibold mb-2" htmlFor="location">
+        <label className="text-gray-700 mb-2 font-semibold" htmlFor="location">
           Location
         </label>
         <input
           id="location"
           type="text"
-          className="border border-gray-300 rounded-md px-4 py-2"
+          className="border-gray-300 rounded-md border px-4 py-2"
           placeholder="Enter location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
       </div>
       <div className="flex flex-col">
-        <label className="text-gray-700 font-semibold mb-2" htmlFor="type">
+        <label className="text-gray-700 mb-2 font-semibold" htmlFor="type">
           Type
         </label>
-        <input
+        <select
           id="type"
-          type="text"
-          className="border border-gray-300 rounded-md px-4 py-2"
-          placeholder="Enter type"
+          className="border-gray-300 rounded-md border px-4 py-2"
           value={type}
           onChange={(e) => setType(e.target.value)}
-        />
+        >
+          <option value="" disabled>
+            Select type
+          </option>
+          <option value="eco">ECO</option>
+          <option value="plastic">Plastic</option>
+          <option value="papers">Paper</option>
+          {/* Add more options as needed */}
+        </select>
       </div>
       <div className="flex flex-col">
-        <label className="text-gray-700 font-semibold mb-2" htmlFor="date">
+        <label className="text-gray-700 mb-2 font-semibold" htmlFor="date">
           Date
         </label>
         <input
           id="date"
           type="date"
-          className="border border-gray-300 rounded-md px-4 py-2"
+          className="border-gray-300 rounded-md border px-4 py-2"
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
       </div>
       <div className="flex flex-col">
-        <label className="text-gray-700 font-semibold mb-2" htmlFor="description">
+        <label
+          className="text-gray-700 mb-2 font-semibold"
+          htmlFor="description"
+        >
           Description
         </label>
         <textarea
           id="description"
-          className="border border-gray-300 rounded-md px-4 py-2"
+          className="border-gray-300 rounded-md border px-4 py-2"
           placeholder="Enter description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -120,16 +129,16 @@ function AddManagement({ onSubmit }: { onSubmit: () => void }) {
       </div>
       <button
         type="submit"
-        className="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-md"
+        className="w-full rounded-md bg-green-600 px-6 py-3 font-bold text-white"
       >
-        Add Topic
+        Add Appointment
       </button>
     </form>
   );
 }
 
-// Edit Topic Form (EditTopicForm)
-function EditTopicForm({
+// Edit Appointment Form (EditAppointmentForm)
+function EditAppointmentForm({
   id,
   location,
   type,
@@ -148,14 +157,14 @@ function EditTopicForm({
   const [newType, setNewType] = useState(type);
   const [newDescription, setNewDescription] = useState(description);
   const [newDate, setNewDate] = useState(
-    date ? new Date(date).toISOString().split("T")[0] : ""
+    date ? new Date(date).toISOString().split("T")[0] : "",
   );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const res = await fetch(`/api/topics/${id}`, {
+      const res = await fetch(`/api/Appointments/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -171,7 +180,7 @@ function EditTopicForm({
       if (res.ok) {
         onSubmit();
       } else {
-        throw new Error("Failed to update topic");
+        throw new Error("Failed to update Appointment");
       }
     } catch (error) {
       console.error(error);
@@ -181,57 +190,67 @@ function EditTopicForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="flex flex-col">
-        <label className="text-gray-700 font-semibold mb-2" htmlFor="location">
+        <label className="text-gray-700 mb-2 font-semibold" htmlFor="location">
           Location
         </label>
         <input
           id="location"
           type="text"
-          className="border border-gray-300 rounded-md px-4 py-2"
+          className="border-gray-300 rounded-md border px-4 py-2"
           value={newLocation}
           onChange={(e) => setNewLocation(e.target.value)}
         />
       </div>
       <div className="flex flex-col">
-        <label className="text-gray-700 font-semibold mb-2" htmlFor="type">
+        <label className="text-gray-700 mb-2 font-semibold" htmlFor="type">
           Type
         </label>
-        <input
+        <select
           id="type"
-          type="text"
-          className="border border-gray-300 rounded-md px-4 py-2"
+          className="border-gray-300 rounded-md border px-4 py-2"
           value={newType}
           onChange={(e) => setNewType(e.target.value)}
-        />
+        >
+          <option value="" disabled>
+            Select type
+          </option>
+          <option value="eco">ECO</option>
+          <option value="plastic">Plastic</option>
+          <option value="papers">Paper</option>
+          {/* Add more options as needed */}
+        </select>
       </div>
       <div className="flex flex-col">
-        <label className="text-gray-700 font-semibold mb-2" htmlFor="date">
+        <label className="text-gray-700 mb-2 font-semibold" htmlFor="date">
           Date
         </label>
         <input
           id="date"
           type="date"
-          className="border border-gray-300 rounded-md px-4 py-2"
+          className="border-gray-300 rounded-md border px-4 py-2"
           value={newDate}
           onChange={(e) => setNewDate(e.target.value)}
         />
       </div>
       <div className="flex flex-col">
-        <label className="text-gray-700 font-semibold mb-2" htmlFor="description">
+        <label
+          className="text-gray-700 mb-2 font-semibold"
+          htmlFor="description"
+        >
           Description
         </label>
         <textarea
           id="description"
-          className="border border-gray-300 rounded-md px-4 py-2"
+          className="border-gray-300 rounded-md border px-4 py-2"
           value={newDescription}
           onChange={(e) => setNewDescription(e.target.value)}
         />
       </div>
       <button
         type="submit"
-        className="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-md"
+        className="w-full rounded-md bg-green-600 px-6 py-3 font-bold text-white"
       >
-        Update Topic
+        Update Appointment
       </button>
     </form>
   );
@@ -239,74 +258,74 @@ function EditTopicForm({
 
 // ManagementAppointment Component
 export default function ManagementAppointment() {
-  const [topics, setTopics] = useState<Topic[]>([]);
+  const [Appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const router = useRouter();
 
-  // Fetch topics from the API
-  const getTopics = async () => {
+  // Fetch Appointments from the API
+  const getAppointments = async () => {
     try {
-      const res = await fetch("/api/topics", {
+      const res = await fetch("/api/Appointments", {
         cache: "no-store",
       });
 
       if (!res.ok) {
-        throw new Error("Failed to fetch topics");
+        throw new Error("Failed to fetch Appointments");
       }
 
       const data = await res.json();
-      setTopics(data.topics || []);
+      setAppointments(data.Appointments || []);
     } catch (error) {
-      console.error("Error loading topics: ", error);
-      setTopics([]);
+      console.error("Error loading Appointments: ", error);
+      setAppointments([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch topics when the component mounts
+  // Fetch Appointments when the component mounts
   useEffect(() => {
-    getTopics();
+    getAppointments();
   }, []);
 
-  // Function to handle deleting a topic
-  const deleteTopic = async (id: string) => {
+  // Function to handle deleting a Appointment
+  const deleteAppointment = async (id: string) => {
     try {
-      const res = await fetch(`/api/topics/${id}`, {
+      const res = await fetch(`/api/Appointments/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
       });
-  
+
       if (res.ok) {
-        getTopics(); // Refresh the topics after deletion
+        getAppointments(); // Refresh the Appointments after deletion
       } else {
-        throw new Error("Failed to delete topic");
+        throw new Error("Failed to delete Appointment");
       }
     } catch (error) {
-      console.error("Error deleting topic: ", error);
+      console.error("Error deleting Appointment: ", error);
     }
   };
 
-  // Handle Add Topic Modal
+  // Handle Add Appointment Modal
   const openAddModal = () => {
     setIsAddModalOpen(true);
   };
 
-  // Handle Edit Topic Modal
-  const openEditModal = (topic: Topic) => {
-    setSelectedTopic(topic);
+  // Handle Edit Appointment Modal
+  const openEditModal = (Appointment: Appointment) => {
+    setSelectedAppointment(Appointment);
     setIsEditModalOpen(true);
   };
 
   const closeModal = () => {
     setIsAddModalOpen(false);
     setIsEditModalOpen(false);
-    setSelectedTopic(null);
+    setSelectedAppointment(null);
   };
 
   if (loading) {
@@ -319,43 +338,46 @@ export default function ManagementAppointment() {
 
   return (
     <div className="mx-auto mt-10 max-w-6xl px-4">
-      {/* Button to open Add Topic modal */}
+      {/* Button to open Add Appointment modal */}
       <button
         onClick={openAddModal}
-        className="bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition-colors"
+        className="rounded-md bg-green-600 px-4 py-2 font-bold text-white transition-colors hover:bg-[#90d892]"
       >
-        Add Topic
+        Add Appointment
       </button>
 
-      {topics.length === 0 ? (
+      {Appointments.length === 0 ? (
         <p className="text-gray-600 text-center text-lg font-semibold">
-          No topics available.
+          No Appointments available.
         </p>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-5">
-          {topics.map((t) => (
+        <div className="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {Appointments.map((t) => (
             <div
               key={t.id}
               className="border-gray-300 flex flex-col justify-between gap-4 rounded-lg border bg-green-50 p-4 shadow-lg"
             >
               <div>
                 <h2 className="text-gray-800 text-lg font-bold">{t.type}</h2>
-                <p className="text-gray-600 text-sm">Location: {t.location}</p>
-                <p className="text-gray-600 mb-2 text-sm">
-                  {t.date ? new Date(t.date).toLocaleDateString() : "Date not available"}
+                <p className="text-gray-600 text-sm mt-[5px]">Location: {t.location}</p>
+                <p className="text-gray-600 mb-2 text-sm mt-[5px]">Date: 
+                  {t.date
+                    ? new Date(t.date).toLocaleDateString()
+                    : "Date not available"}
                 </p>
-                <p className="text-gray-600">{t.description}</p>
+                <p className="text-gray-600 mb-2 text-sm">Type: {t.type}</p>
+                <p className="text-gray-600">Description: {t.description}</p>
               </div>
               <div className="flex space-x-4">
                 <button
-                  className="text-blue-600 font-bold hover:text-blue-800"
+                  className="font-bold text-blue-600 hover:text-blue-800"
                   onClick={() => openEditModal(t)}
                 >
                   Edit
                 </button>
                 <button
-                  className="text-red-600 font-bold hover:text-red-800"
-                  onClick={() => deleteTopic(t.id)}
+                  className="text-red-600 hover:text-red-800 font-bold"
+                  onClick={() => deleteAppointment(t.id)}
                 >
                   Delete
                 </button>
@@ -365,20 +387,20 @@ export default function ManagementAppointment() {
         </div>
       )}
 
-      {/* Modal for Add Topic */}
+      {/* Modal for Add Appointment */}
       <Modal isOpen={isAddModalOpen} onClose={closeModal}>
         <AddManagement onSubmit={closeModal} />
       </Modal>
 
-      {/* Modal for Edit Topic */}
-      {selectedTopic && (
+      {/* Modal for Edit Appointment */}
+      {selectedAppointment && (
         <Modal isOpen={isEditModalOpen} onClose={closeModal}>
-          <EditTopicForm
-            id={selectedTopic.id}
-            location={selectedTopic.location}
-            type={selectedTopic.type}
-            description={selectedTopic.description}
-            date={selectedTopic.date || ""}
+          <EditAppointmentForm
+            id={selectedAppointment.id}
+            location={selectedAppointment.location}
+            type={selectedAppointment.type}
+            description={selectedAppointment.description}
+            date={selectedAppointment.date || ""}
             onSubmit={closeModal}
           />
         </Modal>
