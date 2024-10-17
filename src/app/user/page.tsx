@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { SignedIn } from "@clerk/nextjs";
 import getAllLocations from "../../../actions/get-locations";
 import { checkRole } from '@/utils/roles'
+import ManagementAppointment from "@/components/Settings/AppointmentManagement/ManageAppointment";
 
 export const metadata: Metadata = {
   title: "RealTime Garbage Management System",
@@ -24,7 +25,7 @@ export default async function User() {
 
   return (
     <DefaultLayout isAdmin={isAdmin}>
-      <div>Create the Appointments page</div>
+      <ManagementAppointment/>
     </DefaultLayout>
   );
 }

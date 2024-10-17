@@ -24,9 +24,10 @@ model Location {
 }
 
 model Appointment {
-  id          Int      @id @default(autoincrement())
-  location    String
-  type        String
-  description String
-  date        DateTime? @default(now())
+  id            Int       @id @default(autoincrement())
+  location      String
+  type          String
+  description   String
+  date          DateTime? @default(now())
+  paymentStatus String    @default("pending")
 }

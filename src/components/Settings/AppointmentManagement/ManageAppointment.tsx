@@ -7,6 +7,7 @@ interface Appointment {
   type: string;
   description: string;
   date?: string;
+  paymentStatus?: string; // Add this line
 }
 
 import { useState, useEffect } from "react";
@@ -24,12 +25,21 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
 
   return (
     <div className="bg-gray-600 fixed inset-0 z-50 flex items-center justify-center bg-opacity-50">
-      <div className="relative w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
+      <div className="relative w-full max-w-[380px] rounded-lg bg-white p-6  shadow-lg">
         <button
           onClick={onClose}
           className="text-gray-500 hover:text-gray-800 absolute right-2 top-2"
         >
-          &times;
+          <i
+            className="fa-duotone fa-solid fa-circle-xmark mr-[10px] mt-[5px] text-[20pt]"
+            style={
+              {
+                "--fa-primary-color": "#fff",
+                "--fa-secondary-color": "#ff4141",
+                "--fa-secondary-opacity": "1",
+              } as React.CSSProperties
+            }
+          ></i>
         </button>
         {children}
       </div>
@@ -127,11 +137,18 @@ function AddManagement({ onSubmit }: { onSubmit: () => void }) {
           onChange={(e) => setDescription(e.target.value)}
         />
       </div>
+
       <button
         type="submit"
-        className="w-full rounded-md bg-green-600 px-6 py-3 font-bold text-white"
+        className="w-full rounded-md bg-[#ea8c44] px-6 py-3 font-bold text-white"
       >
-        Add Appointment
+        Do payment later
+      </button>
+      <button
+        type="submit"
+        className="w-full rounded-md bg-[#fa4b34] px-6 py-3 font-bold text-white"
+      >
+        Make payment
       </button>
     </form>
   );
@@ -248,7 +265,7 @@ function EditAppointmentForm({
       </div>
       <button
         type="submit"
-        className="w-full rounded-md bg-green-600 px-6 py-3 font-bold text-white"
+        className="w-full rounded-md bg-[#c89434] px-6 py-3 font-bold text-white"
       >
         Update Appointment
       </button>
@@ -262,8 +279,9 @@ export default function ManagementAppointment() {
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
-  const router = useRouter();
+  const [selectedAppointment, setSelectedAppointment] =
+    useState<Appointment | null>(null);
+  const [shouldRefresh, setShouldRefresh] = useState(false); // Add this state to trigger refresh
 
   // Fetch Appointments from the API
   const getAppointments = async () => {
@@ -289,7 +307,7 @@ export default function ManagementAppointment() {
   // Fetch Appointments when the component mounts
   useEffect(() => {
     getAppointments();
-  }, []);
+  }, [shouldRefresh]);
 
   // Function to handle deleting a Appointment
   const deleteAppointment = async (id: string) => {
@@ -326,6 +344,7 @@ export default function ManagementAppointment() {
     setIsAddModalOpen(false);
     setIsEditModalOpen(false);
     setSelectedAppointment(null);
+    setShouldRefresh((prev) => !prev); // Trigger refresh after modal is closed
   };
 
   if (loading) {
@@ -341,7 +360,7 @@ export default function ManagementAppointment() {
       {/* Button to open Add Appointment modal */}
       <button
         onClick={openAddModal}
-        className="rounded-md bg-green-600 px-4 py-2 font-bold text-white transition-colors hover:bg-[#90d892]"
+        className="rounded-[9pt] bg-[#c89434] px-4 py-4 text-[20px] font-bold text-white transition-colors hover:bg-[#e0c098]"
       >
         Add Appointment
       </button>
@@ -355,18 +374,33 @@ export default function ManagementAppointment() {
           {Appointments.map((t) => (
             <div
               key={t.id}
-              className="border-gray-300 flex flex-col justify-between gap-4 rounded-lg border bg-green-50 p-4 shadow-lg"
+              className="border-gray-300 flex flex-col justify-between gap-4 rounded-lg border-[2px] border-white bg-[#fbeabb] p-4 shadow-lg"
             >
               <div>
-                <h2 className="text-gray-800 text-lg font-bold">{t.type}</h2>
-                <p className="text-gray-600 text-sm mt-[5px]">Location: {t.location}</p>
-                <p className="text-gray-600 mb-2 text-sm mt-[5px]">Date: 
+                <div className="flex justify-between">
+                  <h2 className="text-gray-800 text-[17pt] font-bold">
+                    {t.type}
+                  </h2>
+                  <p className="text-gray-600 mt-[5px] text-[13pt]">
+                    Payment:
+                    <span className="text-[#ea3636]"> {t.paymentStatus}</span>
+                  </p>
+                </div>
+                <p className="text-gray-600 mt-[10px] text-[13pt]">
+                  Location: {t.location}
+                </p>
+                <p className="text-gray-600 mt-[5px] text-[13pt]">
+                  Due Date:
                   {t.date
                     ? new Date(t.date).toLocaleDateString()
                     : "Date not available"}
                 </p>
-                <p className="text-gray-600 mb-2 text-sm">Type: {t.type}</p>
-                <p className="text-gray-600">Description: {t.description}</p>
+                <p className="text-gray-600 mt-[5px] text-[13pt]">
+                  Type: {t.type}
+                </p>
+                <p className="text-gray-600 mt-[5px] text-[13pt]">
+                  Description: {t.description}
+                </p>
               </div>
               <div className="flex space-x-4">
                 <button
@@ -376,7 +410,7 @@ export default function ManagementAppointment() {
                   Edit
                 </button>
                 <button
-                  className="text-red-600 hover:text-red-800 font-bold"
+                  className="hover:text-red-800 font-bold text-[#d22121]"
                   onClick={() => deleteAppointment(t.id)}
                 >
                   Delete

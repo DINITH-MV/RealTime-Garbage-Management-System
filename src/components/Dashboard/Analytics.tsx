@@ -5,6 +5,7 @@ import ChartOne from "../Charts/ChartOne";
 import ChartTwo from "../Charts/ChartTwo";
 import ChatCard from "../Chat/ChatCard";
 import CardDataStats from "../CardDataStats";
+import ViewAppointment from "../Appointments/ViewAppointments";
 
 const MapOne = dynamic(() => import("@/components/Maps/MapOne"), {
   ssr: false,
@@ -51,6 +52,7 @@ const Analytics: React.FC<AnalyticsProps> = ({ locations }) => {
         <ChartTwo filteredLocations={filteredLocations} />
         <ChartThree filteredLocations={filteredLocations} />
         <MapOne filteredLocations={filteredLocations} />
+        <ViewAppointment/>
       </div>
     </>
   );

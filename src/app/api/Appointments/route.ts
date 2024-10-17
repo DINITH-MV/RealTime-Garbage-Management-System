@@ -4,24 +4,25 @@ import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
-// POST request: Create a new Appointment with location, type, description, and date
+// POST request: Create a new Appointment with location, type, description, date, and paymentStatus
 export async function POST(request: NextRequest) {
   try {
     // Parse the request body to extract data
-    const { location, type, description, date } = await request.json();
+    const { location, type, description, date, paymentStatus } = await request.json();
     
     // Validate required fields
     if (!location || !type || !description) {
       return NextResponse.json({ message: "Location, type, and description are required" }, { status: 400 });
     }
     
-    // Create the new Appointment, auto-generating the ID
+    // Create the new Appointment, auto-generating the ID and setting default paymentStatus if not provided
     const newAppointment = await prisma.appointment.create({
       data: {
         location,
         type,
         description,
         date: date ? new Date(date) : undefined, // Set date if provided
+        paymentStatus: paymentStatus || "pending", // Default paymentStatus is "pending"
       },
     });
 
@@ -40,7 +41,7 @@ export async function GET() {
   return NextResponse.json({ Appointments });
 }
 
-// DELETE request: Delete a Appointment by its ID
+// DELETE request: Delete an Appointment by its ID
 export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
 

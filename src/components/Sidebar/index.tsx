@@ -84,6 +84,7 @@ const adminRoutes = [
         route: "#",
         children: [
           { label: "Area Management", route: "/admin/settings/AreaManagement" },
+          { label: "Request Management", route: "/admin/settings/RequestManagement" },
         ],
       },
       {
