@@ -76,6 +76,12 @@ function AddManagement({ onSubmit }: { onSubmit: () => void }) {
     }
   };
 
+  const router = useRouter();
+
+  const handlePayment  = () => {
+    router.push("/user/payment");
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="flex flex-col">
@@ -145,8 +151,8 @@ function AddManagement({ onSubmit }: { onSubmit: () => void }) {
         Do payment later
       </button>
       <button
-        type="submit"
         className="w-full rounded-md bg-[#fa4b34] px-6 py-3 font-bold text-white"
+        onClick={handlePayment}
       >
         Make payment
       </button>

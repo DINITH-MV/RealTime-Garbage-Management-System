@@ -1,10 +1,8 @@
 import Analytics from "@/components/Dashboard/Analytics";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import getAllLocations from "../../../../../actions/get-locations";
 import { checkRole } from "@/utils/roles";
-import Payment from "@/components/Settings/Payment/Payment";
-
+import Payment from "@/components/Payment/Payment";
 export const metadata: Metadata = {
   title: "RealTime Garbage Management System",
   description: "This is Next.js Home for GarbageManagementDashboard",
