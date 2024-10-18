@@ -31,3 +31,14 @@ model Appointment {
   date          DateTime? @default(now())
   paymentStatus String    @default("pending")
 }
+
+model Payment {
+  id          Int      @id @default(autoincrement())
+  cardNumber  String
+  cvc         String
+  expDate     DateTime
+  ownerName   String
+  balance     Int
+  history     String
+  createdAt   DateTime @default(now())
+}
