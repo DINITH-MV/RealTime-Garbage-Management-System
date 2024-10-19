@@ -4,7 +4,6 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { SignedIn } from "@clerk/nextjs";
-import getAllLocations from "../../../actions/get-locations";
 import { checkRole } from '@/utils/roles'
 import ManagementAppointment from "@/components/Settings/AppointmentManagement/ManageAppointment";
 import Route from "@/components/Routes/Route";

@@ -1,7 +1,6 @@
 import Analytics from "@/components/Dashboard/Analytics";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import getAllLocations from "../../../../../actions/get-locations";
 import { checkRole } from "@/utils/roles";
 import Payment from "@/components/Payment/Payment";
 

@@ -54,7 +54,7 @@ const PaymentPage = () => {
   };
 
   return (
-    <div className="flex h-[85vh] bg-gray-100">
+    <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-lg">
         {/* Sidebar Header */}
@@ -69,7 +69,7 @@ const PaymentPage = () => {
                 onClick={() => setActiveButton("paymentDetails")}
                 className={`flex items-center w-full px-4 py-2 mt-2 text-sm font-medium text-left ${
                   activeButton === "paymentDetails"
-                    ? "bg-[#bfaa20] text-white"
+                    ? "bg-blue-500 text-white"
                     : "text-gray-700 hover:bg-gray-200"
                 } rounded-lg`}
               >
@@ -80,7 +80,7 @@ const PaymentPage = () => {
                 onClick={handleHistoryClick}
                 className={`flex items-center w-full px-4 py-2 mt-2 text-sm font-medium text-left ${
                   activeButton === "history"
-                    ? "bg-[#bfaa20] text-white"
+                    ? "bg-blue-500 text-white"
                     : "text-gray-700 hover:bg-gray-200"
                 } rounded-lg`}
               >
@@ -94,7 +94,7 @@ const PaymentPage = () => {
                 onClick={() => setActiveButton("rechargeWallet")}
                 className={`flex items-center w-full px-4 py-2 mt-2 text-sm font-medium text-left ${
                   activeButton === "rechargeWallet"
-                    ? "bg-[#bfaa20] text-white"
+                    ? "bg-blue-500 text-white"
                     : "text-gray-700 hover:bg-gray-200"
                 } rounded-lg`}
               >
@@ -105,7 +105,7 @@ const PaymentPage = () => {
                 onClick={() => setActiveButton("pay")}
                 className={`flex items-center w-full px-4 py-2 mt-2 text-sm font-medium text-left ${
                   activeButton === "pay"
-                    ? "bg-[#bfaa20] text-white"
+                    ? "bg-blue-500 text-white"
                     : "text-gray-700 hover:bg-gray-200"
                 } rounded-lg`}
               >
@@ -116,12 +116,12 @@ const PaymentPage = () => {
                 onClick={() => setActiveButton("bill")}
                 className={`flex items-center w-full px-4 py-2 mt-2 text-sm font-medium text-left ${
                   activeButton === "bill"
-                    ? "bg-[#bfaa20] text-white"
+                    ? "bg-blue-500 text-white"
                     : "text-gray-700 hover:bg-gray-200"
                 } rounded-lg`}
               >
                 <FaFileInvoiceDollar className="mr-2" />
-                Saved Cards
+                Bill
               </button>
             </>
           )}
@@ -157,7 +157,7 @@ const PaymentPage = () => {
               <p className="mb-4">
                 Payment details include that if the user’s home is in an urban area, the payment is
                 calculated as the user’s garbage weight multiplied by 100. For homes not in urban
-                areas, a fixed amount of Rs:1000  is charged.
+                areas, a fixed amount of 1000 RS is charged.
               </p>
               <p>
                 The system supports two payment methods: <strong>Card</strong> and{" "}
@@ -172,6 +172,8 @@ const PaymentPage = () => {
 
           {mode === "payment" && activeButton === "rechargeWallet" && (
             <RechargeWallet
+              walletBalance={walletBalance}
+              setWalletBalance={setWalletBalance}
             />
           )}
 
