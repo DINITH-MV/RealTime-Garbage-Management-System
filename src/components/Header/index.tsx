@@ -10,14 +10,17 @@ const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
   isAdmin?: boolean;
+  isDriver?: boolean;
 }) => {
   const [isAdminPage, setIsAdminPage] = useState(false);
+  const [isDriverPage, setIsDriverPage] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       // Check if the URL contains the word "admin"
       const currentUrl = window.location.href;
       setIsAdminPage(currentUrl.includes("admin"));
+      setIsDriverPage(currentUrl.includes("driver"));
     }
   }, []);
 
@@ -25,13 +28,35 @@ const Header = (props: {
 
   const router = useRouter();
 
-  const handleNavigate = () => {
+  const handleNavigateClient = () => {
     if (isAdminPage) {
       router.push("/user"); // Navigate to '/user' if admin
+    } else if (isDriverPage) {
+      router.push("/user"); // Navigate to '/driver' if driver
+    } else {
+      router.push("/user"); // Navigate to '/admin' if not admin
+    }
+  };
+
+  const handleNavigateDriver = () => {
+    if (isAdminPage) {
+      router.push("/driver"); // Navigate to '/driver' if admin
+    } else if (isDriverPage) {
+      router.push("/driver"); // Navigate to '/admin' if driver
+    } else {
+      router.push("/driver"); // Navigate to '/admin' if not admin
+    }
+  }
+
+  const handleNavigateAdmin = () => {
+    if (isAdminPage) {
+      router.push("/admin"); // Navigate to '/driver' if admin
+    } else if (isDriverPage) {
+      router.push("/admin"); // Navigate to '/admin' if driver
     } else {
       router.push("/admin"); // Navigate to '/admin' if not admin
     }
-  };
+  }
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
@@ -79,7 +104,7 @@ const Header = (props: {
           </button>
           {/* <!-- Hamburger Toggle BTN --> */}
 
-          <Link className="block flex-shrink-0 lg:hidden" href="/">
+          <Link className="flex-shrink-0 hidden" href="/">
             <Image
               width={32}
               height={32}
@@ -127,23 +152,58 @@ const Header = (props: {
 
         <div className="2xsm:gap-7 flex items-center gap-3">
           {isAdmin && (
-            <>
-              {isAdminPage ? ( // Redirect to a 403 error page
-                <button
-                  onClick={handleNavigate}
-                  className="ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]"
-                >
-                  <p className="text-[14pt] dark:text-[#000] ">Client mode</p>
-                </button>
-              ) : (
-                <button
-                  onClick={handleNavigate}
-                  className="ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]"
-                >
-                  <p className="text-[14pt] dark:text-[#000] ">Admin mode</p>
-                </button>
-              )}
-            </>
+           <>
+           {isAdminPage ? (
+             // Admin page view with client and driver modes
+             <>
+               <button
+                 onClick={handleNavigateClient}
+                 className="ml-[39px] ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]"
+               >
+                 <p className="text-[14pt] dark:text-[#000]">Client mode</p>
+               </button>
+               <button
+                 onClick={handleNavigateDriver}
+                 className="ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]"
+               >
+                 <p className="text-[14pt] dark:text-[#000]">Driver mode</p>
+               </button>
+             </>
+           ) : isDriverPage ? (
+             // Driver page view with admin and client modes
+             <>
+               <button
+                 onClick={handleNavigateClient}
+                 className="ml-[39px] ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]"
+               >
+                 <p className="text-[14pt] dark:text-[#000]">Client mode</p>
+               </button>
+               <button
+                 onClick={handleNavigateAdmin}
+                 className="ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]"
+               >
+                 <p className="text-[14pt] dark:text-[#000]">Admin mode</p>
+               </button>
+             </>
+           ) : (
+             // Default (client) view with admin and driver modes
+             <>
+               <button
+                 onClick={handleNavigateAdmin}
+                 className="ml-[39px] ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]"
+               >
+                 <p className="text-[14pt] dark:text-[#000]">Admin mode</p>
+               </button>
+               <button
+                 onClick={handleNavigateDriver}
+                 className="ring-offset-background focus-visible:ring-ring inline-flex h-[45px] items-center justify-center rounded-[11px] border-[3px] border-white bg-[#c0fd6a] px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:bg-[rgb(255,203,248)]"
+               >
+                 <p className="text-[14pt] dark:text-[#000]">Driver mode</p>
+               </button>
+             </>
+           )}
+         </>
+         
           )}
           <ul className="2xsm:gap-4 flex items-center gap-2">
             {/* <!-- Dark Mode Toggler --> */}

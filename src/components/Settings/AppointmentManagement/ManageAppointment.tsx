@@ -366,7 +366,7 @@ export default function ManagementAppointment() {
       {/* Button to open Add Appointment modal */}
       <button
         onClick={openAddModal}
-        className="rounded-[9pt] bg-[#c89434] px-4 py-4 text-[20px] font-bold text-white transition-colors hover:bg-[#e0c098]"
+        className="rounded-[7pt] bg-[#c89434] px-4 py-4 text-[20px] font-bold text-white transition-colors hover:bg-[#e0c098]"
       >
         Add Appointment
       </button>

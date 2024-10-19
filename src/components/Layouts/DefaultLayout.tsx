@@ -5,10 +5,12 @@ import Header from "@/components/Header";
 
 export default function DefaultLayout({
   children,
-  isAdmin
+  isAdmin,
+  isDriver
 }: {
   children: React.ReactNode;
   isAdmin?: boolean;
+  isDriver?: boolean;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
@@ -22,7 +24,7 @@ export default function DefaultLayout({
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col lg:ml-72.5">
           {/* <!-- ===== Header Start ===== --> */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} isAdmin={isAdmin}/>
+          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} isAdmin={isAdmin} isDriver={isDriver}/>
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}

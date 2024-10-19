@@ -6,27 +6,29 @@ import { redirect } from "next/navigation";
 import { SignedIn } from "@clerk/nextjs";
 import getAllLocations from "../../../actions/get-locations";
 import { checkRole } from '@/utils/roles'
+import ManagementAppointment from "@/components/Settings/AppointmentManagement/ManageAppointment";
+import Route from "@/components/Routes/Route";
 
 export const metadata: Metadata = {
   title: "RealTime Garbage Management System",
   description: "This is Next.js Home for GarbageManagementDashboard",
 };
 
-export default async function Admin() {
-  const formattedLocations = await getAllLocations();
+export default async function User() {
+
+  const { userId } = auth();
 
   const isAdmin = checkRole('admin'); // Perform role check server-side
-  const isDriver = checkRole('driver'); // Perform role check server-side
 
-  // console.log(userId);
+  if (!userId ) {
+    return redirect("/auth/sign-in");
+  }
 
-  if (!checkRole('admin')) {
-      redirect('/403'); // Redirect to a 403 error page
-    }
-  // Conditionally render the page based on whether the user is an admin
+  console.log(isAdmin)
+
   return (
-    <DefaultLayout isAdmin={isAdmin} isDriver={isDriver}>
-      <Analytics locations={formattedLocations} />
+    <DefaultLayout isAdmin={isAdmin}>
+      <Route/>
     </DefaultLayout>
   );
 }

@@ -10,9 +10,11 @@ export default async function Home() {
         return redirect("/auth/sign-in");
     }
 
-    if (checkRole('admin')) {
-      redirect('/admin')
+    if (checkRole("admin")) {
+      redirect("/admin");
+    } else if (checkRole("driver")) {
+      redirect("/driver");
     } else {
-      redirect('/user')
+      redirect("/user");
     }
 }
