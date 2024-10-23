@@ -51,8 +51,8 @@ const DriverDashboard = () => {
   };
 
   const updateCounts = (data: WastePickup[]) => {
-    const completed = data.filter(pickup => pickup.Status === 'completed').length;
-    const pending = data.filter(pickup => pickup.Status === 'pending').length;
+    const completed = data.filter(pickup => pickup.Status === 'Completed').length;
+    const pending = data.filter(pickup => pickup.Status === 'Pending').length;
 
     setCompletedCount(completed);
     setPendingCount(pending);

@@ -279,7 +279,7 @@ const driverRoutes = [
             />
           </svg>
         ),
-        label: "Routes",
+        label: "Schedules",
         route: "/driver",
       },
       {
