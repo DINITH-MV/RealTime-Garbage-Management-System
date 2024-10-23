@@ -32,6 +32,18 @@ model Appointment {
   paymentStatus String    @default("pending")
 }
 
+model WastePickup {
+  id            Int       @id @default(autoincrement())
+  apid          Int
+  location      String
+  type          String
+  description   String
+  date          DateTime? @default(now())
+  driver  	String
+  Status  	String
+	
+}
+
 model Payment {
   id          Int      @id @default(autoincrement())
   cardNumber  String
@@ -41,4 +53,15 @@ model Payment {
   balance     Int
   history     String
   createdAt   DateTime @default(now())
+}
+
+model Feedback {
+  id            Int       @id @default(autoincrement())
+  aid          Int
+  location      String
+  type          String
+  date          DateTime? @default(now())
+  driver  	String
+  Feedback  	String
+	
 }

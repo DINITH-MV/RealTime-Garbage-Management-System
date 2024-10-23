@@ -6,9 +6,8 @@ import { redirect } from "next/navigation";
 import { SignedIn } from "@clerk/nextjs";
 import { checkRole } from '@/utils/roles'
 import ManagementAppointment from "@/components/Settings/AppointmentManagement/ManageAppointment";
-import Route from "@/components/Routes/Route";
+import Route from "@/components/Settings/Route/route";
 import FeedbackList from "@/components/WastePickup/FeedbackList";
-import DriverDashboard from "@/components/WastePickup/DriverDashboard";
 
 export const metadata: Metadata = {
   title: "RealTime Garbage Management System",
@@ -29,7 +28,6 @@ export default async function User() {
 
   return (
     <DefaultLayout isAdmin={isAdmin}>
-      <DriverDashboard/>
       <FeedbackList/>
     </DefaultLayout>
   );
