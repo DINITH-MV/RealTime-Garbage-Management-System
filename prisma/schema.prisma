@@ -25,6 +25,7 @@ model Location {
 
 model Appointment {
   id            Int       @id @default(autoincrement())
+  userId        String
   location      String
   type          String
   description   String
@@ -41,4 +42,13 @@ model Payment {
   balance     Int
   history     String
   createdAt   DateTime @default(now())
+}
+
+model PaymentCardDetails {
+  id          Int      @id @default(autoincrement())
+  cardNumber  String
+  cvc         String
+  expDate     DateTime
+  ownerName   String
+  createdAt   DateTime  @default(now())
 }

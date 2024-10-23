@@ -27,12 +27,12 @@ const PaymentPage = () => {
   // Fetch wallet balance on component mount
   useEffect(() => {
     const fetchWalletBalance = async () => {
-      try {
-        const response = await axios.get("/api/wallet-balance"); // Replace with your API endpoint
-        setWalletBalance(response.data.balance);
-      } catch (error) {
-        console.error("Error fetching wallet balance:", error);
-      }
+      // try {
+      //   const response = await axios.get("/api/wallet-balance"); // Replace with your API endpoint
+      //   setWalletBalance(response.data.balance);
+      // } catch (error) {
+      //   console.error("Error fetching wallet balance:", error);
+      // }
     };
     fetchWalletBalance();
   }, []);
@@ -180,7 +180,7 @@ const PaymentPage = () => {
           )}
 
           {mode === "payment" && activeButton === "bill" && (
-            <BillSection walletBalance={walletBalance} />
+            <BillSection />
           )}
         </main>
       </div>
