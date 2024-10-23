@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 
 const prisma = new PrismaClient();
 
@@ -8,7 +9,7 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   try {
     // Parse the request body to extract data
-    const { location, type, description, date, paymentStatus } = await request.json();
+    const { location, type, description, date, paymentStatus, userId } = await request.json();
     
     // Validate required fields
     if (!location || !type || !description) {
@@ -18,6 +19,7 @@ export async function POST(request: NextRequest) {
     // Create the new Appointment, auto-generating the ID and setting default paymentStatus if not provided
     const newAppointment = await prisma.appointment.create({
       data: {
+        userId,
         location,
         type,
         description,
