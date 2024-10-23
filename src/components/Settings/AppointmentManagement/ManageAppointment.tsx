@@ -3,6 +3,7 @@
 // Define the Appointment interface
 interface Appointment {
   id: string;
+  userId: string;
   location: string;
   type: string;
   description: string;
@@ -48,7 +49,13 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
 }
 
 // Add Appointment Form (AddManagement)
-function AddManagement({ onSubmit, userId }: { onSubmit: () => void; userId: string }) {
+function AddManagement({
+  onSubmit,
+  userId,
+}: {
+  onSubmit: () => void;
+  userId: string;
+}) {
   const [location, setLocation] = useState("");
   const [type, setType] = useState("");
   const [date, setDate] = useState("");
@@ -80,9 +87,9 @@ function AddManagement({ onSubmit, userId }: { onSubmit: () => void; userId: str
 
   const router = useRouter();
 
-  const handlePayment  = () => {
+  const handlePayment = () => {
     router.push("/user/payment");
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
@@ -286,7 +293,9 @@ interface ManagementAppointmentProps {
 }
 
 // ManagementAppointment Component
-const ManagementAppointment: React.FC<ManagementAppointmentProps> = ({ userId }) => {
+const ManagementAppointment: React.FC<ManagementAppointmentProps> = ({
+  userId,
+}) => {
   const [Appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -294,6 +303,8 @@ const ManagementAppointment: React.FC<ManagementAppointmentProps> = ({ userId })
   const [selectedAppointment, setSelectedAppointment] =
     useState<Appointment | null>(null);
   const [shouldRefresh, setShouldRefresh] = useState(false); // Add this state to trigger refresh
+
+  console.log(userId);
 
   // Fetch Appointments from the API
   const getAppointments = async () => {
@@ -378,60 +389,63 @@ const ManagementAppointment: React.FC<ManagementAppointmentProps> = ({ userId })
       </button>
 
       {Appointments.length === 0 ? (
-        <p className="text-gray-600 text-center text-lg font-semibold">
-          No Appointments available.
-        </p>
-      ) : (
-        <div className="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {Appointments.map((t) => (
-            <div
-              key={t.id}
-              className="border-gray-300 flex flex-col justify-between gap-4 rounded-lg border-[2px] border-white bg-[#fbeabb] p-4 shadow-lg"
-            >
-              <div>
-                <div className="flex justify-between">
-                  <h2 className="text-gray-800 text-[17pt] font-bold">
-                    {t.type}
-                  </h2>
-                  <p className="text-gray-600 mt-[5px] text-[13pt]">
-                    Payment:
-                    <span className="text-[#ea3636]"> {t.paymentStatus}</span>
-                  </p>
-                </div>
-                <p className="text-gray-600 mt-[10px] text-[13pt]">
-                  Location: {t.location}
-                </p>
-                <p className="text-gray-600 mt-[5px] text-[13pt]">
-                  Due Date:
-                  {t.date
-                    ? new Date(t.date).toLocaleDateString()
-                    : "Date not available"}
-                </p>
-                <p className="text-gray-600 mt-[5px] text-[13pt]">
-                  Type: {t.type}
-                </p>
-                <p className="text-gray-600 mt-[5px] text-[13pt]">
-                  Description: {t.description}
-                </p>
-              </div>
-              <div className="flex space-x-4">
-                <button
-                  className="font-bold text-blue-600 hover:text-blue-800"
-                  onClick={() => openEditModal(t)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="hover:text-red-800 font-bold text-[#d22121]"
-                  onClick={() => deleteAppointment(t.id)}
-                >
-                  Delete
-                </button>
-              </div>
+  <p className="text-gray-600 text-center text-lg font-semibold">
+    No Appointments available.
+  </p>
+) : (
+  <div className="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {Appointments
+      .filter((t) => t.userId === userId) // Filter by userId
+      .map((t) => (
+        <div
+          key={t.id}
+          className="border-gray-300 flex flex-col justify-between gap-4 rounded-lg border-[2px] border-white bg-[#fbeabb] p-4 shadow-lg"
+        >
+          <div>
+            <div className="flex justify-between">
+              <h2 className="text-gray-800 text-[17pt] font-bold">
+                {t.type}
+              </h2>
+              <p className="text-gray-600 mt-[5px] text-[13pt]">
+                Payment:
+                <span className="text-[#ea3636]"> {t.paymentStatus}</span>
+              </p>
             </div>
-          ))}
+            <p className="text-gray-600 mt-[10px] text-[13pt]">
+              Location: {t.location}
+            </p>
+            <p className="text-gray-600 mt-[5px] text-[13pt]">
+              Due Date:
+              {t.date
+                ? new Date(t.date).toLocaleDateString()
+                : "Date not available"}
+            </p>
+            <p className="text-gray-600 mt-[5px] text-[13pt]">
+              Type: {t.type}
+            </p>
+            <p className="text-gray-600 mt-[5px] text-[13pt]">
+              Description: {t.description}
+            </p>
+          </div>
+          <div className="flex space-x-4">
+            <button
+              className="font-bold text-blue-600 hover:text-blue-800"
+              onClick={() => openEditModal(t)}
+            >
+              Edit
+            </button>
+            <button
+              className="hover:text-red-800 font-bold text-[#d22121]"
+              onClick={() => deleteAppointment(t.id)}
+            >
+              Delete
+            </button>
+          </div>
         </div>
-      )}
+      ))}
+  </div>
+)}
+
 
       {/* Modal for Add Appointment */}
       <Modal isOpen={isAddModalOpen} onClose={closeModal}>
@@ -457,6 +471,6 @@ const ManagementAppointment: React.FC<ManagementAppointmentProps> = ({ userId })
       )}
     </div>
   );
-}
+};
 
 export default ManagementAppointment;
