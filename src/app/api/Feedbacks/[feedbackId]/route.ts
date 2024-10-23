@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
-// GET_ALL request: Fetch all Feedback records from the database
+ 
 export async function GET_ALL() {
   try {
     const feedbacks = await prisma.feedback.findMany();
@@ -17,8 +17,7 @@ export async function GET_ALL() {
     );
   }
 }
-
-// PUT request: Update a Feedback record by its ID (full update)
+ 
 export async function PUT(request: NextRequest, { params }: { params: { feedbackId: string } }) {
   try {
     const { feedbackId } = params;
@@ -26,11 +25,10 @@ export async function PUT(request: NextRequest, { params }: { params: { feedback
     if (!feedbackId || isNaN(Number(feedbackId))) {
       return NextResponse.json({ message: "Invalid Feedback ID" }, { status: 400 });
     }
-
-    // Destructure the fields from the request body
+ 
     const { aid, location, type, date, driver, Feedback } = await request.json();
 
-    // Ensure all required fields are provided for a full update
+    
     if (!aid || !location || !type || !driver || !Feedback) {
       return NextResponse.json(
         { message: "aid, location, type, driver, and Feedback are required" },
@@ -38,7 +36,7 @@ export async function PUT(request: NextRequest, { params }: { params: { feedback
       );
     }
 
-    // Update the Feedback by ID
+    
     const updatedFeedback = await prisma.feedback.update({
       where: { id: parseInt(feedbackId) },
       data: {
@@ -64,7 +62,7 @@ export async function PUT(request: NextRequest, { params }: { params: { feedback
   }
 }
 
-// PATCH request: Partially update a Feedback by its ID
+
 export async function PATCH(request: NextRequest, { params }: { params: { feedbackId: string } }) {
   try {
     const { feedbackId } = params;
@@ -101,7 +99,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { feedba
   }
 }
 
-// GET request: Fetch a Feedback by its ID
+ 
 export async function GET(request: NextRequest, { params }: { params: { feedbackId: string } }) {
   try {
     const { feedbackId } = params;
@@ -128,7 +126,7 @@ export async function GET(request: NextRequest, { params }: { params: { feedback
   }
 }
 
-// DELETE request: Delete a Feedback by its ID
+ 
 export async function DELETE(request: NextRequest, { params }: { params: { feedbackId: string } }) {
   try {
     const { feedbackId } = params;

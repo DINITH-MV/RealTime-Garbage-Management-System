@@ -178,7 +178,7 @@ const userRoutes = [
             />
           </svg>
         ),
-        label: "Progress",
+        label: "Feedbacks",
         route: "/user/progress",
       },
       {

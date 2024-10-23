@@ -4,19 +4,18 @@ import { useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-// Define the WastePickup interface
 interface WastePickup {
-  id: number; // Changed to number for Int type
-  apid: number; // Changed to number to match the model
+  id: number; 
+  apid: number; 
   location: string;
   type: string;
   description: string;
-  date?: string; // Optional
-  driver: string; // New field
-  Status: string; // Changed from Status to lowercase
+  date?: string; 
+  driver: string; 
+  Status: string; 
 }
 
-// ManagementWastePickup Component
+
 export default function ViewWastePickup() {
   const [wastePickups, setWastePickups] = useState<WastePickup[]>([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +24,7 @@ export default function ViewWastePickup() {
   const [currentPickup, setCurrentPickup] = useState<WastePickup | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Fetch WastePickups from the API
+ 
   const getWastePickups = async () => {
     try {
       const res = await fetch("/api/WastePickups", {
@@ -37,8 +36,8 @@ export default function ViewWastePickup() {
       }
 
       const data = await res.json();
-      console.log(data); // Check if the data is as expected
-      setWastePickups(data.wastePickups || []); // Ensure this is called with the correct data
+      console.log(data);
+      setWastePickups(data.wastePickups || []); 
     } catch (error) {
       console.error("Error loading WastePickups: ", error);
       setWastePickups([]);
@@ -47,7 +46,7 @@ export default function ViewWastePickup() {
     }
   };
 
-  // Fetch WastePickups when the component mounts
+ 
   useEffect(() => {
     getWastePickups();
   }, [shouldRefresh]);
@@ -68,10 +67,10 @@ export default function ViewWastePickup() {
         }
 
         setShouldRefresh((prev) => !prev);
-        toast.success("Pickup deleted successfully!"); // Show toast on successful delete
+        toast.success("Pickup deleted successfully!"); 
       } catch (error) {
         console.error("Error deleting WastePickup: ", error);
-        toast.error("Error deleting WastePickup."); // Show error toast
+        toast.error("Error deleting WastePickup.");
       }
     }
   };
@@ -89,28 +88,28 @@ export default function ViewWastePickup() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(updatedPickup), // Send entire pickup object
+          body: JSON.stringify(updatedPickup), 
         });
 
         if (!res.ok) {
           throw new Error("Failed to update WastePickup");
         }
 
-        setShouldRefresh((prev) => !prev); // Refresh the list after updating
-        toast.success("Pickup updated successfully!"); // Show toast on successful update
+        setShouldRefresh((prev) => !prev); 
+        toast.success("Pickup updated successfully!"); 
       } catch (error) {
         console.error("Error updating WastePickup: ", error);
-        toast.error("Error updating WastePickup."); // Show error toast
+        toast.error("Error updating WastePickup.");
       }
     }
   };
 
-// EditDialog Component
+
 interface EditDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (updatedPickup: WastePickup) => void; // Update type for submission
-  currentPickup: WastePickup | null; // Pass the current pickup object
+  onSubmit: (updatedPickup: WastePickup) => void;
+  currentPickup: WastePickup | null; 
 }
 
 const EditDialog: React.FC<EditDialogProps> = ({ isOpen, onClose, onSubmit, currentPickup }) => {
@@ -128,7 +127,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, onClose, onSubmit, curr
     }
   };
 
-  if (!isOpen || !updatedPickup) return null; // Don't render if dialog is not open
+  if (!isOpen || !updatedPickup) return null; 
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -166,13 +165,13 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, onClose, onSubmit, curr
             
             <input
               type="hidden"
-              value={updatedPickup.date?.split("T")[0]} // Format date
+              value={updatedPickup.date?.split("T")[0]} 
               onChange={(e) => setUpdatedPickup({ ...updatedPickup, date: e.target.value })}
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Driver</label>
+            
             <select
               value={updatedPickup.driver}
               onChange={(e) => setUpdatedPickup({ ...updatedPickup, driver: e.target.value })}
@@ -193,7 +192,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, onClose, onSubmit, curr
             />
           </div>
           <div className="flex justify-end">
-            <button type="button" onClick={onClose} className="mr-2 bg-gray-500 text-white px-4 py-2 rounded">
+            <button type="button" onClick={onClose} className="mr-2 bg-red text-white px-4 py-2 rounded">
               Cancel
             </button>
             <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
@@ -236,9 +235,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, onClose, onSubmit, curr
               <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3 text-left font-semibold uppercase tracking-wider">
                 Date
               </th>
-              <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3 text-left font-semibold uppercase tracking-wider">
-                Driver
-              </th>
+              
               <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3 text-left font-semibold uppercase tracking-wider">
                 Status
               </th>
@@ -253,20 +250,22 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, onClose, onSubmit, curr
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{pickup.location}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{pickup.type}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{pickup.description}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{pickup.date}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{pickup.driver}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                 {new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(pickup.date))}
+                </td>
+                
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{pickup.Status}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {pickup.Status !== "In Progress" && pickup.Status !== "Completed" ? (
           <div className="flex space-x-2">
-            {/* Edit Button */}
+         
             <button
               onClick={() => handleEditClick(pickup)}
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
               Edit
             </button>
-            {/* Delete Button */}
+            
             <button
               onClick={() => handleDelete(pickup.id)}
               className="bg-red text-white px-4 py-2 rounded hover:bg-red-600"
@@ -275,7 +274,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, onClose, onSubmit, curr
             </button>
           </div>
         ) : (
-          <span className="text-gray-400">Already Started</span> // Disabled actions text
+          <span className="text-gray-400">Already Started</span> 
         )}
       </td>
               </tr>

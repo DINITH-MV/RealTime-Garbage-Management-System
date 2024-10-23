@@ -17,7 +17,7 @@ export default async function User() {
 
   const { userId } = auth();
 
-  const isAdmin = checkRole('admin'); // Perform role check server-side
+  const isAdmin = checkRole('admin'); 
 
   if (!userId ) {
     return redirect("/auth/sign-in");

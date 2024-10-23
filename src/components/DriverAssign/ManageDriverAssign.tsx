@@ -6,14 +6,14 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import ViewWastePickup from "./ViewDriverAssign";
 
-// Define types for Appointment and WastePickup
+
 type AppointmentData = {
   id: string;
   location: string;
   type: string;
   description: string;
-  date: string; // Using string for date; you can parse it as needed
-  paymentStatus: string; // Add this line
+  date: string; 
+  paymentStatus: string; 
 };
 
 type WastePickupData = {
@@ -41,7 +41,7 @@ const DriverAssign: React.FC = () => {
     { id: 3, name: 'Driver 3' },
   ];
 
-  // Fetch Appointments from the API
+ 
   const getAppointments = async () => {
     try {
       const res = await fetch("/api/Appointments", {
@@ -53,7 +53,7 @@ const DriverAssign: React.FC = () => {
       }
   
       const data = await res.json();
-      // Filter out only completed appointments
+     
       const completedAppointments = data.Appointments?.filter(
         (appointment: AppointmentData) => appointment.paymentStatus === "completed"
       ) || [];
@@ -77,8 +77,8 @@ const DriverAssign: React.FC = () => {
       }
   
       const data = await res.json();
-      console.log(data); // Check if the data is as expected
-      setWastePickups(data.wastePickups || []); // Ensure this is called with the correct data
+      console.log(data); 
+      setWastePickups(data.wastePickups || []); 
     } catch (error) {
       console.error("Error loading WastePickups: ", error);
       setWastePickups([]);
@@ -87,14 +87,14 @@ const DriverAssign: React.FC = () => {
     }
   };
 
-  // Fetch both Appointments and WastePickups on component mount
+ 
   useEffect(() => {
     getAppointments();
     getWastePickups();
   }, []);
 
   
-  // Function to handle assigning a driver to a selected appointment
+  
   const handleAssignDriver = async (appointment: AppointmentData) => {
     try {
       const response = await axios.post(`/api/WastePickups`, {
@@ -109,7 +109,7 @@ const DriverAssign: React.FC = () => {
 
       if (response.status === 201) {
         toast.success("Driver assigned successfully!");
-        // Refresh WastePickups after insertion
+       
         getWastePickups();
       } else {
         toast.error("Failed to assign driver");
@@ -120,13 +120,22 @@ const DriverAssign: React.FC = () => {
     }
   };
 
-  // Filter appointments based on the search term
-  // Filter appointments based on the search term and exclude ones present in WastePickups
+  
+  const [selectedDrivers, setSelectedDrivers] = useState<string[]>(new Array(appointments.length).fill(''));
+
+ 
+  const handleDriverChange = (index: number, driverName: string) => {
+    const newSelectedDrivers = [...selectedDrivers];
+    newSelectedDrivers[index] = driverName; // Update the driver for the specific index
+    setSelectedDrivers(newSelectedDrivers);
+};
+
+  
   const filteredAppointments = appointments.filter(
     (appointment) =>
-      // Check if the appointment id exists in wastePickups.apid
+      
       !wastePickups.some((pickup) => pickup.apid === appointment.id) &&
-      // Filter based on search term
+     
       (appointment.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         appointment.type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         appointment.description?.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -142,11 +151,7 @@ const DriverAssign: React.FC = () => {
       <div className="font-sans bg-gray-200 antialiased">
         <div className="container mx-auto px-4 sm:px-8">
           <div className="py-8">
-            <div>
-              <h2 className="text-2xl font-semibold leading-tight">
-                Waste Pickup Management
-              </h2>
-            </div>
+            
             <div className="my-2 flex w-full flex-col sm:flex-row">
               <div className="relative block">
                 <span className="absolute inset-y-0 left-0 flex h-full items-center pl-2">
@@ -172,9 +177,7 @@ const DriverAssign: React.FC = () => {
                 <table className="min-w-full leading-normal">
                   <thead className="bg-[#15752e] text-[#f5fbf0] dark:bg-[#174312]">
                     <tr>
-                      <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3 text-left font-semibold uppercase tracking-wider">
-                        ID
-                      </th>
+                     
                      
                       <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3 text-left font-semibold uppercase tracking-wider">
                         Location
@@ -203,11 +206,7 @@ const DriverAssign: React.FC = () => {
                         key={appointment.id}
                         className="border-gray-200 border-b dark:border-[#1a4e17] dark:bg-[#23621c] dark:text-[#fff]"
                       >
-                        <td className="border-gray-200 max-w-[120px] border-b px-5 py-5 text-[14pt]">
-                          <p className="text-gray-900 overflow-hidden text-ellipsis whitespace-nowrap">
-                            {appointment.id}
-                          </p>
-                        </td>
+                        
                         <td className="border-gray-200 border-b px-5 py-5 text-[14pt]">
                           <p className="text-gray-900 whitespace-no-wrap">
                             {appointment.location}
@@ -224,9 +223,9 @@ const DriverAssign: React.FC = () => {
                           </p>
                         </td>
                         <td className="border-gray-200 border-b px-5 py-5 text-[14pt]">
-                          <p className="text-gray-900 whitespace-no-wrap">
-                            {new Date(appointment.date).toLocaleString()}
-                          </p>
+                        <p className="text-gray-900 whitespace-no-wrap">
+  {new Intl.DateTimeFormat("en-US", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(appointment.date))}
+</p>
                         </td>
                         <td className="border-gray-200 border-b px-5 py-5 text-[14pt]">
                         <select
@@ -260,10 +259,7 @@ const DriverAssign: React.FC = () => {
               </div>
             </div>
 
-            <h2 className="text-2xl font-semibold leading-tight mt-4">
-              Waste Pickup Table
-            </h2>
-
+            
            <div>
            <ViewWastePickup/>
             </div>

@@ -2,12 +2,9 @@
 
 import { useState, useEffect, ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify"; // Import toast
-import "react-toastify/dist/ReactToastify.css"; // Import toast styles
-import Link from "next/link";
-import FeedbackDialog from "./FeedbackList";
+import { toast } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css";
 
-// Define the structure for the WastePickup interface
 interface WastePickup {
   apid: number;
   id: number;
@@ -19,12 +16,12 @@ interface WastePickup {
   Status: string;
 }
 
-// EditDialog Component
+
 interface EditDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (updatedPickup: WastePickup) => void; // Update type for submission
-  currentPickup: WastePickup | null; // Pass the current pickup object
+  onSubmit: (updatedPickup: WastePickup) => void; 
+  currentPickup: WastePickup | null; 
 }
 
 const EditDialog: React.FC<EditDialogProps> = ({ isOpen, onClose, onSubmit, currentPickup }) => {
@@ -42,7 +39,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, onClose, onSubmit, curr
     }
   };
 
-  if (!isOpen || !updatedPickup) return null; // Don't render if dialog is not open
+  if (!isOpen || !updatedPickup) return null; 
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -130,10 +127,10 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, onClose, onSubmit, curr
             </div>
           </div>
           <div className="flex justify-end">
-            <button type="button" onClick={onClose} className="mr-2 bg-rose-700 text-white px-4 py-2 rounded">
+            <button type="button" onClick={onClose} className="mr-50 bg-rose-700 text-white px-4 py-2 rounded">
               Cancel
             </button>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+            <button type="submit" className="bg-blue-500 ml-1 text-white px-4 py-2 rounded">
               Update
             </button>
           </div>
@@ -168,7 +165,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, onClose, onSubmit, curr
           <div className="mb-4">
             <input
               type="hidden"
-              value={updatedPickup.date?.split("T")[0]} // Format date
+              value={updatedPickup.date?.split("T")[0]}
               onChange={(e) => setUpdatedPickup({ ...updatedPickup, date: e.target.value })}
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             />
@@ -237,11 +234,11 @@ export default function ViewWastePickup() {
           throw new Error("Failed to delete pickup");
         }
 
-        toast.success("Pickup deleted successfully"); // Show success toast
+        toast.success("Pickup deleted successfully"); 
         setShouldRefresh((prev) => !prev);
       } catch (error) {
         console.error("Error deleting pickup:", error);
-        toast.error("Failed to delete pickup"); // Show error toast
+        toast.error("Failed to delete pickup"); 
       }
     }
   };
@@ -261,17 +258,17 @@ export default function ViewWastePickup() {
         throw new Error("Failed to update pickup");
       }
 
-      toast.success("Pickup updated successfully"); // Show success toast
+      toast.success("Pickup updated successfully"); 
       setShouldRefresh((prev) => !prev);
     } catch (error) {
       console.error("Error updating pickup:", error);
-      toast.error("Failed to update pickup"); // Show error toast
+      toast.error("Failed to update pickup"); 
     }
   };
 
   const handleOpenFeedbackDialog = (pickup: WastePickup) => {
     setFeedbackData({
-      aid: pickup.apid, // Assuming apid corresponds to aid in your feedback model
+      aid: pickup.apid, 
       location: pickup.location,
       type: pickup.type,
       date: pickup.date || '',
@@ -296,28 +293,28 @@ export default function ViewWastePickup() {
   try {
     const res = await fetch("/api/Feedbacks", {
       method: "POST",
-      body: JSON.stringify(feedbackData), // Ensure feedbackData is structured correctly
+      body: JSON.stringify(feedbackData), 
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    // Parse the response
+    
     const responseData = await res.json(); 
 
-    // Check if the response status is 201 (Created)
+   
     if (res.status === 201) {
       toast.success("Feedback submitted successfully!");
-      handleFeedbackDialogClose(); // Close the dialog
-      setShouldRefresh((prev) => !prev); // Trigger refresh of data
+      handleFeedbackDialogClose(); 
+      setShouldRefresh((prev) => !prev);
       router.push('/driver'); 
     } else {
-      // Handle error responses
+      
       throw new Error(responseData.message || "Failed to submit feedback");
     }
   } catch (error) {
     console.error("Error submitting feedback:", error);
-    toast.error("Failed to submit feedback"); // Show error toast
+    toast.error("Failed to submit feedback"); 
   }
 }; 
 
@@ -328,44 +325,40 @@ export default function ViewWastePickup() {
   return (
     <div className="p-4">
       <div className="text-center my-8">
-        <h1 className="text-3xl font-bold">Waste Pickup Management</h1>
+        <h1 className="text-3xl font-bold">Waste Pickup</h1>
       </div>
 
       {wastePickups.length === 0 ? (
         <div>No Waste Pickups available.</div>
       ) : (
-        <table className="table-auto w-full">
-        <thead>
+        <table className="min-w-full leading-normal">
+        <thead className="bg-[#15752e] text-[#f5fbf0] dark:bg-[#174312]">
           <tr>
-            <th className="px-4 py-2">ID</th>
-            <th className="px-4 py-2">Location</th>
-            <th className="px-4 py-2">Type</th>
-            <th className="px-4 py-2">Description</th>
-            <th className="px-4 py-2">Date</th>
-            <th className="px-4 py-2">Driver</th>
-            <th className="px-4 py-2">Status</th>
-            <th className="px-4 py-2">Actions</th>
+            
+            <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3 text-left font-semibold uppercase tracking-wider">Location</th>
+            <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3 text-left font-semibold uppercase tracking-wider">Type</th>
+            <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3 text-left font-semibold uppercase tracking-wider">Description</th>
+            <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3 text-left font-semibold uppercase tracking-wider">Date</th>
+            <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3 text-left font-semibold uppercase tracking-wider">Status</th>
+            <th className="bg-gray-100 border-gray-200 text-gray-600 border-b-2 px-5 py-3 text-left font-semibold uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
         <tbody>
           {wastePickups.map((pickup) => (
             <tr key={pickup.id}>
-              <td className="border px-4 py-2">{pickup.id}</td>
+              
               <td className="border px-4 py-2">{pickup.location}</td>
               <td className="border px-4 py-2">{pickup.type}</td>
               <td className="border px-4 py-2">{pickup.description}</td>
               <td className="border px-4 py-2">{pickup.date?.split("T")[0]}</td>
-              <td className="border px-4 py-2">{pickup.driver}</td>
               <td className="border px-4 py-2">{pickup.Status}</td>
               <td className="border px-4 py-2 flex justify-center">
                 <button
                   onClick={() => handleEditClick(pickup)}
                 className="bg-blue-500 text-white px-4 py-2 rounded mr-2">Edit
                 </button>
-                <button
-                  onClick={() => handleDelete(pickup.id)}
-                  className="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
-                  <button onClick={() => handleOpenFeedbackDialog(pickup)} className="bg-blue-500 text-white px-4 py-2 rounded">
+                
+                  <button onClick={() => handleOpenFeedbackDialog(pickup)} className="bg-red ml-2 text-white px-4 py-2 rounded">
               Give Feedback
             </button>
                 
@@ -375,33 +368,33 @@ export default function ViewWastePickup() {
 
         {/* Feedback Dialog */}
       {isFeedbackDialogOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="bg-white p-5 rounded shadow-lg">
+        <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
+          <div className="bg-white p-5 rounded shadow-lg w-45 h-20" >
             <h2 className="text-lg font-semibold">Feedback</h2>
             <form onSubmit={handleFeedbackSubmit}>
               <input type="hidden" value={feedbackData.aid} />
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Location</label>
+               
                 <input
-                  type="text"
+                  type="hidden"
                   value={feedbackData.location}
                   readOnly
                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Type</label>
+                
                 <input
-                  type="text"
+                  type="hidden"
                   value={feedbackData.type}
                   readOnly
                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">Driver</label>
+            
                 <input
-                  type="text"
+                  type="hidden"
                   value={feedbackData.driver}
                   readOnly
                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"

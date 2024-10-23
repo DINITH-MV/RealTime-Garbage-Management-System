@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Ensure this is imported
+import 'react-toastify/dist/ReactToastify.css'; 
 
 
 export interface FeedbackType {
@@ -61,7 +61,7 @@ const FeedbackList = () => {
 
   const handleDelete = async (id: number) => {
     try {
-      console.log(`Deleting feedback with id: ${id}`); // Debug log
+      console.log(`Deleting feedback with id: ${id}`); 
       const res = await fetch(`/api/Feedbacks/${id}`, {
         method: 'DELETE',
       });
@@ -82,7 +82,7 @@ const FeedbackList = () => {
     if (!newFeedback) return;
 
     try {
-      console.log(`Saving feedback: ${JSON.stringify(newFeedback)}`); // Debug log
+      console.log(`Saving feedback: ${JSON.stringify(newFeedback)}`);
       const res = await fetch(`/api/Feedbacks/${newFeedback.id}`, {
         method: 'PUT',
         headers: {
@@ -172,22 +172,20 @@ const FeedbackList = () => {
             </button>
             <button
               onClick={() => setEditingFeedback(null)}
-              className="bg-gray-300 p-2 rounded"
+              className="bg-red  text-white p-2 rounded"
             >
               Cancel
             </button>
           </div>
         </div>
       ) : (
-        <table className="min-w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border border-gray-300 p-2">ID</th>
+        <table className="min-w-full leading-normal">
+          <thead className="bg-[#15752e] text-[#f5fbf0] dark:bg-[#174312]">
+            <tr className="border-gray-200 border-b dark:border-[#1a4e17] dark:bg-[#23621c] dark:text-[#fff]">
               <th className="border border-gray-300 p-2">Pickup ID</th>
               <th className="border border-gray-300 p-2">Location</th>
               <th className="border border-gray-300 p-2">Type</th>
               <th className="border border-gray-300 p-2">Date</th>
-              <th className="border border-gray-300 p-2">Driver</th>
               <th className="border border-gray-300 p-2">Feedback</th>
               <th className="border border-gray-300 p-2">Actions</th>
             </tr>
@@ -195,26 +193,24 @@ const FeedbackList = () => {
           <tbody>
             {feedbacks.map((feedback) => (
               <tr key={feedback.id} className="hover:bg-gray-50">
-                <td className="border border-gray-300 p-2">{feedback.id}</td>
                 <td className="border border-gray-300 p-2">{feedback.aid}</td>
                 <td className="border border-gray-300 p-2">{feedback.location}</td>
                 <td className="border border-gray-300 p-2">{feedback.type}</td>
                 <td className="border border-gray-300 p-2">{formatDate(feedback.date)}</td>
-                <td className="border border-gray-300 p-2">{feedback.driver}</td>
                 <td className="border border-gray-300 p-2">{feedback.Feedback}</td>
                 <td className="border border-gray-300 p-2">
-                  <button
+                  <center><button
                     onClick={() => handleEdit(feedback)}
-                    className="bg-yellow-500 text-white p-1 rounded mr-1"
+                    className="bg-blue-800 text-white p-1 rounded mr-1"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(feedback.id)}
-                    className="bg-red-500 text-white p-1 rounded"
+                    className="bg-rose-700 text-white p-1 ml-4 rounded"
                   >
                     Delete
-                  </button>
+                  </button></center>
                 </td>
               </tr>
             ))}

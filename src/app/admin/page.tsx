@@ -15,15 +15,14 @@ export const metadata: Metadata = {
 export default async function Admin() {
   const formattedLocations = await getAllLocations();
 
-  const isAdmin = checkRole('admin'); // Perform role check server-side
-  const isDriver = checkRole('driver'); // Perform role check server-side
-
-  // console.log(userId);
+  const isAdmin = checkRole('admin'); 
+  const isDriver = checkRole('driver'); 
+  
 
   if (!checkRole('admin')) {
-      redirect('/403'); // Redirect to a 403 error page
+      redirect('/403'); 
     }
-  // Conditionally render the page based on whether the user is an admin
+  
   return (
     <DefaultLayout isAdmin={isAdmin} isDriver={isDriver}>
       <Analytics locations={formattedLocations} />

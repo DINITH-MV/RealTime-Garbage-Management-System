@@ -5,14 +5,14 @@ import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
-// POST request: Create a new Feedback record
+ 
 export async function POST(request: NextRequest) {
   const { feedback, aid, location, type, driver } = await request.json();
 
-  // Log incoming request body for debugging
+   
   console.log("Incoming request body:", { feedback, aid, location, type, driver });
 
-  // Validate input
+  
   if (!feedback || !aid || !location || !type || !driver) {
     return NextResponse.json(
       { message: "Feedback, Pickup ID, Location, Type, and Driver are required." },
@@ -20,16 +20,16 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Insert feedback into your database here
+ 
   try {
     const newFeedback = await prisma.feedback.create({
       data: {
-        aid: aid,                   // Ensure this field matches your Prisma schema
-        location: location,         // Ensure this field matches your Prisma schema
-        type: type,                 // Ensure this field matches your Prisma schema
-        date: new Date(),           // You can set the date explicitly if required, or it will default to now()
-        driver: driver,             // Ensure this field matches your Prisma schema
-        Feedback: feedback,         // This must match your schema exactly (case-sensitive)
+        aid: aid,                    
+        location: location,          
+        type: type,                  
+        date: new Date(),            
+        driver: driver,              
+        Feedback: feedback,          
       },
     });
     return NextResponse.json(
@@ -44,8 +44,7 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-// GET request: Fetch all Feedback records
+ 
 export async function GET() {
   try {
     const feedbacks = await prisma.feedback.findMany();
@@ -59,11 +58,11 @@ export async function GET() {
   }
 }
 
-// DELETE request: Delete a Feedback record by its ID
+ 
 export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
 
-  // Validate that ID is provided
+  
   if (!id) {
     return NextResponse.json(
       { message: "ID is required" },
@@ -72,10 +71,10 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
-    // Find the Feedback by its ID and delete it
+    
     const deletedFeedback = await prisma.feedback.delete({
       where: {
-        id: parseInt(id), // Ensure the ID is a number
+        id: parseInt(id),  
       },
     });
 

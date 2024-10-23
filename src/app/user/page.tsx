@@ -24,7 +24,7 @@ export default async function User() {
 
   return (
     <DefaultLayout isAdmin={isAdmin}>
-      <ManagementAppointment/>
+      <ManagementAppointment userId={undefined}/>
     </DefaultLayout>
   );
 }

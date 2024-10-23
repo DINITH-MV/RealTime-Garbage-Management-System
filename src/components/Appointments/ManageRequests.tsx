@@ -60,7 +60,6 @@ const ManageRequests: React.FC = () => {
       "",
   );
 
-  const [paymentStatus, setPaymentStatus] = useState("");
 
   // Function to handle updating payment status
   const handleUpdatePaymentStatus = async (id: string, newStatus: string) => {

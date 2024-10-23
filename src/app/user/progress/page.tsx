@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Settings() {
-  const isAdmin = checkRole("admin"); // Perform role check server-side
+  const isAdmin = checkRole("admin"); 
 
   return (
     <>
