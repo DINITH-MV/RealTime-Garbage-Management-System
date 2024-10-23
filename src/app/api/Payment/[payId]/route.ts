@@ -23,7 +23,7 @@ export async function PATCH(
 // DELETE Route (Deleting a Generated Code)
 export async function DELETE(
   req: Request,
-  { params }: { params: { payId: number } },
+  { params }: { params: { payId: string } },
 ) {
   try {
     const { payId } = params;
@@ -32,7 +32,7 @@ export async function DELETE(
     console.log("Deleting payment with ID:", payId);
 
     // Call the deletePayment function
-    const deletedPayment = await deletePayment({ id: payId });
+    const deletedPayment = await deletePayment({ id: Number(payId) });
 
     if (!deletedPayment) {
       return new NextResponse("Payment not found or failed to delete", {

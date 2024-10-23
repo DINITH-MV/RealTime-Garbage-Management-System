@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default async function Settings() {
   const formattedLocations = await getAllLocations();
   const isAdmin = checkRole("admin"); // Perform role check server-side
-
+  
   return (
     <>
       <DefaultLayout isAdmin={isAdmin}>

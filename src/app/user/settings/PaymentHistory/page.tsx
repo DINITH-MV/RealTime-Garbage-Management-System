@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { checkRole } from "@/utils/roles";
 import Payment from "@/components/Payment/Payment";
+import PaymentHistory from "@/components/Settings/Payment History/PaymentHistory";
 
 export const metadata: Metadata = {
   title: "RealTime Garbage Management System",
@@ -15,7 +16,7 @@ export default async function Settings() {
   return (
     <>
       <DefaultLayout isAdmin={isAdmin}>
-        <Payment />
+        <PaymentHistory />
       </DefaultLayout>
     </>
   );

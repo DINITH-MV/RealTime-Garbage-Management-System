@@ -1,27 +1,40 @@
 import { NextResponse } from "next/server";
 import addPayment from "../../../../actions/add-payments";
+import getPayments from "../../../../actions/get-payments"; // Import the function to fetch payments
 
+// POST request to add payment
 export async function POST(req: Request) {
   try {
-    // Parse the incoming request body
-    const paymentData = await req.json(); // No destructuring here
+    const paymentData = await req.json();
 
-    // Check if the necessary data is provided
     if (!paymentData) {
       return new NextResponse("Missing payment data", { status: 400 });
     }
 
-    // Call the addPayment function to add the payment data
     const paymentDataSet = await addPayment(paymentData);
 
-    // Return a success response with the added payment data
     return NextResponse.json({
       message: "Payment added successfully",
       paymentDataSet,
     });
   } catch (error) {
-    // Log the error and return a 500 Internal Server Error response
     console.error("[POST /api/add-payment] Error:", error);
+    return new NextResponse("Internal Server Error", { status: 500 });
+  }
+}
+
+// GET request to retrieve all payments
+export async function GET() {
+  try {
+    // Fetch all payment data from the database or data source
+    const paymentDataSet = await getPayments();
+
+    // Return the payment data in the response
+    return NextResponse.json({
+      PaymentCardDetails: paymentDataSet, // Ensure it's returned as PaymentCardDetails
+    });
+  } catch (error) {
+    console.error("[GET /api/payment] Error:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

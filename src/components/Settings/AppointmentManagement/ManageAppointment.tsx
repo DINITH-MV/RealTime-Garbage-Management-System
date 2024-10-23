@@ -12,7 +12,6 @@ interface Appointment {
 }
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 // Modal Component
 interface ModalProps {
@@ -48,7 +47,8 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
   );
 }
 
-// Add Appointment Form (AddManagement)
+import { useRouter } from "next/navigation";
+
 function AddManagement({
   onSubmit,
   userId,
@@ -60,11 +60,40 @@ function AddManagement({
   const [type, setType] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({}); // To store validation errors
 
-  // console.log(userId)
+  const router = useRouter();
+
+  // Validation Logic
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!location) newErrors.location = "Location is required.";
+    if (!type) newErrors.type = "Type is required.";
+    if (!description) newErrors.description = "Description is required.";
+
+    if (!date) {
+      newErrors.date = "Date is required.";
+    } else {
+      const selectedDate = new Date(date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set the time to 0 to compare only dates
+      if (selectedDate < today) {
+        newErrors.date = "You cannot book an appointment for a past date.";
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Validate form before submitting
+    if (!validateForm()) {
+      return; // Do not submit the form if there are validation errors
+    }
 
     try {
       const res = await fetch("/api/Appointments", {
@@ -85,9 +114,11 @@ function AddManagement({
     }
   };
 
-  const router = useRouter();
-
   const handlePayment = () => {
+    if (!validateForm()) {
+      return; // Do not submit the form if there are validation errors
+    }
+
     router.push("/user/payment");
   };
 
@@ -105,6 +136,9 @@ function AddManagement({
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
+        {errors.location && (
+          <p className="text-[#d13333]">{errors.location}</p>
+        )}
       </div>
       <div className="flex flex-col">
         <label className="text-gray-700 mb-2 font-semibold" htmlFor="type">
@@ -124,6 +158,7 @@ function AddManagement({
           <option value="papers">Paper</option>
           {/* Add more options as needed */}
         </select>
+        {errors.type && <p className="text-[#d13333]">{errors.type}</p>}
       </div>
       <div className="flex flex-col">
         <label className="text-gray-700 mb-2 font-semibold" htmlFor="date">
@@ -136,6 +171,7 @@ function AddManagement({
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
+        {errors.date && <p className="text-[#d13333]">{errors.date}</p>}
       </div>
       <div className="flex flex-col">
         <label
@@ -151,6 +187,9 @@ function AddManagement({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+        {errors.description && (
+          <p className="text-[#d13333]">{errors.description}</p>
+        )}
       </div>
 
       <button
@@ -160,6 +199,7 @@ function AddManagement({
         Do payment later
       </button>
       <button
+        type="button"
         className="w-full rounded-md bg-[#fa4b34] px-6 py-3 font-bold text-white"
         onClick={handlePayment}
       >
@@ -168,6 +208,7 @@ function AddManagement({
     </form>
   );
 }
+
 
 // Edit Appointment Form (EditAppointmentForm)
 function EditAppointmentForm({

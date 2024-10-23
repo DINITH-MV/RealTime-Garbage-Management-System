@@ -77,9 +77,9 @@ const payAmount = 1000;
 
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 font-sans">
+    <div className="flex justify-center items-center min-h-[60vh] bg-gray-100 font-sans">
            {frame === 2 && (
-        <div className="w-full mt-[-200px] max-w-lg bg-white p-8 rounded-lg shadow-md text-center">
+        <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-md text-center">
           <h1 className="text-2xl font-semibold mb-6">Payment Method</h1>
           <div className="mb-6">
             <label className="block text-gray-700 mb-2">Select Payment Method:</label>
@@ -168,7 +168,7 @@ const payAmount = 1000;
           <h3 className="text-xl font-medium mb-4">Payment Amount: {payAmount}</h3>
           <button
             onClick={handlePayment}
-            className="w-full bg-[#bfaa20] text-white py-2 rounded-md hover:bg-blue-600"
+            className="w-full bg-[#bfaa20] text-white py-2 rounded-md hover:bg-[#d43232]"
           >
             Pay with Wallet
           </button>

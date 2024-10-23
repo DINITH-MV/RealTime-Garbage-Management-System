@@ -4,6 +4,7 @@ import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
 type LocationData = {
   binId: string;
   city: string;
@@ -23,6 +24,19 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
     null,
   ); // Used for updating
   const [locationList, setLocationList] = useState<LocationData[]>(locations); // Use local state for locations
+
+  console.log(locations)
+
+  type FormErrors = {
+    city?: string;
+    apiUrl?: string;
+    marker?: string;
+    latitude?: string;
+    longitude?: string;
+  };
+
+  const [errors, setErrors] = useState<FormErrors>({}); // For validation errors
+
   const openModal = () => setIsOpen(true);
   const closeModal = () => {
     setIsOpen(false);
@@ -63,9 +77,42 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
       setLongitude("");
     }
   }, [currentLocation]);
+
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!city.trim()) newErrors.city = "City is required.";
+    if (!apiUrl.trim()) newErrors.apiUrl = "Blynk key is required.";
+
+    // Validate marker color code (e.g., #ff0000)
+    const markerRegex = /^#([0-9A-F]{3}){1,2}$/i;
+    if (!marker.trim()) newErrors.marker = "Marker color is required.";
+    else if (!markerRegex.test(marker)) {
+      newErrors.marker = "Please enter a valid hex color code (e.g., #ff0000).";
+    }
+
+    // Validate latitude (should be a number between -90 and 90)
+    const latValue = parseFloat(latitude);
+    if (!latitude.trim()) newErrors.latitude = "Latitude is required.";
+    else if (isNaN(latValue) || latValue < -90 || latValue > 90) {
+      newErrors.latitude = "Please enter a valid latitude (-90 to 90).";
+    }
+
+    // Validate longitude (should be a number between -180 and 180)
+    const longValue = parseFloat(longitude);
+    if (!longitude.trim()) newErrors.longitude = "Longitude is required.";
+    else if (isNaN(longValue) || longValue < -180 || longValue > 180) {
+      newErrors.longitude = "Please enter a valid longitude (-180 to 180).";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
   // Function to handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!validateForm()) return;
     const locationData = {
       city,
       apiUrl,
@@ -77,19 +124,24 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
       let response;
       if (currentLocation) {
         // Updating an existing location
-        response = await fetch(`/api/Area-Management/${currentLocation.binId}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
+        response = await fetch(
+          `/api/Area-Management/${currentLocation.binId}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(locationData),
           },
-          body: JSON.stringify(locationData),
-        });
+        );
         toast.success("Location updated!");
         if (response.ok) {
           // Update the location in the local state
           setLocationList((prevList) =>
             prevList.map((loc) =>
-              loc.binId === currentLocation.binId ? { ...loc, ...locationData } : loc,
+              loc.binId === currentLocation.binId
+                ? { ...loc, ...locationData }
+                : loc,
             ),
           );
         }
@@ -137,6 +189,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
       toast.error("Something went wrong");
     }
   };
+
   return (
     <div>
       <Breadcrumb pageName="Settings / Area Management" />
@@ -340,6 +393,9 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       placeholder="Eg: Kaluthara"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
+                    {errors.city && (
+                      <p className="text-[#d13333]">{errors.city}</p>
+                    )}
                   </div>
                   <div className="mb-4.5 w-full">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -352,6 +408,9 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       placeholder="Ex: https://sgp1.blynk.cloud/external/api/get?token=R9UM..."
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
+                    {errors.apiUrl && (
+                      <p className="text-[#d13333]">{errors.apiUrl}</p>
+                    )}
                   </div>
                   <div className="mb-4.5">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -364,6 +423,9 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       placeholder="Eg: #ff0000"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
+                    {errors.marker && (
+                      <p className="text-[#d13333]">{errors.marker}</p>
+                    )}
                   </div>
                   <div className="mb-4.5">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -376,6 +438,9 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       placeholder="Eg: 8.9585"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
+                    {errors.latitude && (
+                      <p className="text-[#d13333]">{errors.latitude}</p>
+                    )}
                   </div>
                   <div className="mb-4.5">
                     <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -388,6 +453,9 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                       placeholder="Eg: 65.8612"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
+                    {errors.longitude && (
+                      <p className="text-[#d13333]">{errors.longitude}</p>
+                    )}
                   </div>
                   <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
                     {currentLocation ? "Update Location" : "Add a Place"}

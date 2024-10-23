@@ -27,7 +27,7 @@ const PaymentCardManagement = () => {
       setLoading(true);
       setError(""); // Reset error before fetching
 
-      const res = await fetch("/api/PaymentCardDetails", {
+      const res = await fetch("/api/Payment", {
         cache: "no-store", // Ensure the request is not cached
       });
 
@@ -67,7 +67,7 @@ const PaymentCardManagement = () => {
 
   const handleUpdateSubmit = async () => {
     try {
-      const res = await fetch(`/api/PaymentCardDetails/${selectedCard?.id}`, {
+      const res = await fetch(`/api/Payment/${selectedCard?.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -102,7 +102,7 @@ const PaymentCardManagement = () => {
 
   const handleDeleteConfirm = async () => {
     try {
-      const res = await fetch(`/api/PaymentCardDetails/${selectedCard?.id}`, {
+      const res = await fetch(`/api/Payment/${selectedCard?.id}`, {
         method: "DELETE",
       });
 
@@ -146,7 +146,8 @@ const PaymentCardManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {cardDetails.map((card) => (
+            {cardDetails
+            .map((card) => (
               <tr key={card.id}>
                 <td className="border border-gray-300 px-4 py-2">{card.ownerName}</td>
                 <td className="border border-gray-300 px-4 py-2">
@@ -167,7 +168,7 @@ const PaymentCardManagement = () => {
                     Update
                   </button>
                   <button
-                    className="text-red-600 hover:text-red-800 ml-2"
+                    className="text-red-600 hover:text-red-800 text-red ml-2"
                     onClick={() => handleDelete(card)}
                   >
                     Delete
@@ -238,7 +239,7 @@ const PaymentCardManagement = () => {
             </h2>
             <div className="flex justify-end">
               <button
-                className="bg-red-600 text-black px-4 py-2 rounded mr-2"
+                className="bg-red-600 text-red px-4 py-2 rounded mr-2"
                 onClick={handleDeleteConfirm}
               >
                 Delete
