@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 // Define Appointment data type
 type AppointmentData = {
   id: string;
+  userId: string;
   location: string;
   type: string;
   description: string;
@@ -156,9 +157,9 @@ const ManageRequests: React.FC = () => {
                         key={appointment.id}
                         className="border-gray-200 border-b dark:border-[#1a4e17] dark:bg-[#23621c] dark:text-[#fff]"
                       >
-                        <td className="border-gray-200 max-w-[120px] border-b px-5 py-5 text-[14pt]">
+                        <td className="border-gray-200 max-w-[140px] border-b px-5 py-5 text-[14pt]">
                           <p className="text-gray-900  overflow-hidden text-ellipsis whitespace-nowrap">
-                            {appointment.id}
+                            {appointment.userId}
                           </p>
                         </td>
                         <td className="border-gray-200 border-b px-5 py-5 text-[14pt]">

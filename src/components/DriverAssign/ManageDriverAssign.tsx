@@ -230,16 +230,16 @@ const DriverAssign: React.FC = () => {
                         </td>
                         <td className="border-gray-200 border-b px-5 py-5 text-[14pt]">
                         <select
-                        value={selectedDriver}
-                        onChange={(e) => setSelectedDriver(e.target.value)}
-                        className="border-gray-400 bg-white rounded-[7px] p-2"
-                      >
-                        <option value="">Select Driver</option>
-                        <option value=""> Driver 1</option>
-                        <option value=""> Driver 2</option>
-                        <option value=""> Driver 3</option>
-                        
-                      </select>
+                    value={selectedDriver}
+                    onChange={(e) => setSelectedDriver(e.target.value)}
+                  >
+                    <option value="">Select Driver</option>
+                    {drivers.map((driver) => (
+                      <option key={driver.id} value={driver.name}>
+                        {driver.name}
+                      </option>
+                    ))}
+                  </select>
         </td>
      
                         <td className="border-gray-200 border-b px-5 py-5 text-[14pt]">
