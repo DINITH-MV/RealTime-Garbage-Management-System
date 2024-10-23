@@ -48,11 +48,13 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
 }
 
 // Add Appointment Form (AddManagement)
-function AddManagement({ onSubmit }: { onSubmit: () => void }) {
+function AddManagement({ onSubmit, userId }: { onSubmit: () => void; userId: string }) {
   const [location, setLocation] = useState("");
   const [type, setType] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
+
+  // console.log(userId)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +65,7 @@ function AddManagement({ onSubmit }: { onSubmit: () => void }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ location, type, date, description }),
+        body: JSON.stringify({ userId, location, type, date, description }),
       });
 
       if (res.ok) {
@@ -279,8 +281,12 @@ function EditAppointmentForm({
   );
 }
 
+interface ManagementAppointmentProps {
+  userId: string | null | undefined;
+}
+
 // ManagementAppointment Component
-export default function ManagementAppointment() {
+const ManagementAppointment: React.FC<ManagementAppointmentProps> = ({ userId }) => {
   const [Appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -429,7 +435,11 @@ export default function ManagementAppointment() {
 
       {/* Modal for Add Appointment */}
       <Modal isOpen={isAddModalOpen} onClose={closeModal}>
-        <AddManagement onSubmit={closeModal} />
+        {userId ? (
+          <AddManagement onSubmit={closeModal} userId={userId} />
+        ) : (
+          <p className="text-red-500">User need to login.</p>
+        )}
       </Modal>
 
       {/* Modal for Edit Appointment */}
@@ -448,3 +458,5 @@ export default function ManagementAppointment() {
     </div>
   );
 }
+
+export default ManagementAppointment;

@@ -1,8 +1,9 @@
 import Analytics from "@/components/Dashboard/Analytics";
+import { auth } from "@clerk/nextjs/server";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { checkRole } from "@/utils/roles";
-import ManagementAppointment from "@/components/Settings/AppointmentManagement/ManageAppointment";
+import ManagementAppointment from '@/components/Settings/AppointmentManagement/ManageAppointment';
 
 export const metadata: Metadata = {
   title: "RealTime Garbage Management System",
@@ -12,10 +13,12 @@ export const metadata: Metadata = {
 export default async function Settings() {
   const isAdmin = checkRole("admin"); // Perform role check server-side
 
+  const { userId } = auth(); // Use useAuth inside the functional component
+
   return (
     <>
       <DefaultLayout isAdmin={isAdmin}>
-        <ManagementAppointment />
+        <ManagementAppointment userId={userId}/>
       </DefaultLayout>
     </>
   );
