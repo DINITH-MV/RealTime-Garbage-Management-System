@@ -458,7 +458,7 @@ const AreaManagement: React.FC<AreaManagementProps> = ({ locations }) => {
                     )}
                   </div>
                   <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                    {currentLocation ? "Update Location" : "Add a Place"}
+                    {currentLocation ? "Update Bin" : "Add a Bin with location"}
                   </button>
                 </div>
               </form>

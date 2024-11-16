@@ -178,7 +178,7 @@ function AddManagement({
           className="text-gray-700 mb-2 font-semibold"
           htmlFor="description"
         >
-          Description
+          Address
         </label>
         <textarea
           id="description"
@@ -310,7 +310,7 @@ function EditAppointmentForm({
           className="text-gray-700 mb-2 font-semibold"
           htmlFor="description"
         >
-          Description
+          Address
         </label>
         <textarea
           id="description"
@@ -465,7 +465,7 @@ const ManagementAppointment: React.FC<ManagementAppointmentProps> = ({
               Type: {t.type}
             </p>
             <p className="text-gray-600 mt-[5px] text-[13pt]">
-              Description: {t.description}
+              Address: {t.description}
             </p>
           </div>
           <div className="flex space-x-4">

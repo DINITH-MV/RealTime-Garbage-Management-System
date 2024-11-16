@@ -88,7 +88,7 @@ const PaymentHistory: React.FC = () => {
                 <th className="px-6 py-3 text-left">CVC</th>
                 <th className="px-11 py-3 text-left">Expiry Date</th>
                 <th className="px-6 py-3 text-left">Owner Name</th>
-                <th className="px-6 py-3 text-left">Balance</th>
+                <th className="px-6 py-3 text-left">Payment amount</th>
                 <th className="px-6 py-3 text-left">History</th>
                 <th className="px-6 py-3 text-left">Created At</th>
               </tr>
